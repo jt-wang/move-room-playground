@@ -225,7 +225,7 @@ code {
 .btn-primary {
   background: var(--accent);
   border-color: color-mix(in srgb, var(--accent) 80%, var(--ink));
-  color: #FFFFFF;
+  color: var(--on-accent);
 }
 
 .btn-primary:hover {
@@ -835,11 +835,11 @@ main {
   min-height: 44px;
   margin-left: 8px;
   padding: 0 16px;
-  color: #FFFFFF;
+  color: var(--on-accent);
 }
 
 .site-nav .nav-follow:hover {
-  color: #FFFFFF;
+  color: var(--on-accent);
   text-decoration: none;
 }
 
@@ -989,4 +989,16 @@ main {
 h1,
 h2 {
   text-wrap: balance;
+}
+
+@media (prefers-color-scheme: dark) {
+  .lang-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23A7B9B1' stroke-width='1.5'/%3E%3C/svg%3E");
+  }
+}
+
+@media (prefers-color-scheme: dark) and (max-width: 640px) {
+  .lang-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none' stroke='%23A7B9B1' stroke-width='1.4'%3E%3Ccircle cx='10' cy='10' r='8'/%3E%3Cpath d='M2 10h16M10 2c2.5 2.2 3.6 5 3.6 8s-1.1 5.8-3.6 8c-2.5-2.2-3.6-5-3.6-8s1.1-5.8 3.6-8z'/%3E%3C/svg%3E");
+  }
 }

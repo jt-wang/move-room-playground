@@ -1,10 +1,24 @@
-/* Fixed production colors, matching the original default. */
+/* Fixed production colors, matching the original default. Dark follows the visitor's system setting. */
 :root {
   --bg: #F2F5F3;
   --ink: #22312C;
   --muted: #4F635B;
   --accent: #38685B;
+  --on-accent: #FFFFFF;
   --card: #E3ECE7;
   --edge: #BECFC5;
   --play-canvas: #CCE0D6;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121816;
+    --ink: #E3ECE7;
+    --muted: #A7B9B1;
+    --accent: #86C2AE;
+    --on-accent: #0F1C17;
+    --card: #1B2420;
+    --edge: #33433C;
+    --play-canvas: #1E2925;
+  }
 }
