@@ -13,7 +13,8 @@ The public repository and skill Release are available on GitHub. Website deploym
 
 | Path | Source |
 | --- | --- |
-| `/` (`index.html`, `landing.css`, `landing.js`) | `landing/` |
+| `/` and `/zh-hans/`, `/zh-hant/`, `/ja/`, `/ko/`, `/es/` (`index.html` each) | Generated from `landing/index.html` and `landing/i18n.json` by `landing/localize.mjs` |
+| `landing.css`, `landing.js` | `landing/` |
 | `/setup.md` | `landing/setup.md`, the guide agents follow |
 | `/playground/palette.css` | Fixed default color tokens from `landing/palette.css` |
 | `/assets/default-room.png`, `story.mp4`, `story-portrait.mp4`, `story-poster.jpg`, `story-poster-portrait.jpg` | `MOVE_MEDIA_DIR`, checked against the external `MOVE_MEDIA_MANIFEST` |
@@ -76,6 +77,7 @@ PORT=64358 MOVE_PREVIEW_HOSTS=<interface-ip> npm run serve:site
 | `/?s=…`, `/?room=…` (old share and room links) | 302 to `/play/` with the same query |
 | `/play` | 301 to `/play/` |
 | `/playground`, `/playground/` | 302 to `/play/` |
+| `/zh-hans`, `/ja/index.html` and the like | 301 to the language path with a trailing slash |
 | `/x` | 302 to the X follow dialog for @thejingtao; the landing's follow buttons use it |
 | `/play/…`, `/assets/…`, `/source/…`, `/setup.md`, `/playground/palette.*` | Static files |
 | `/api/…` | `worker.mjs`, unchanged (Origin checks, limits, telemetry off unless enabled) |

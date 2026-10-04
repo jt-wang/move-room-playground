@@ -7,11 +7,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import zlib from 'node:zlib';
 import {fileURLToPath} from 'node:url';
+import {LANDING_LOCALES,localizeLanding} from '../landing/localize.mjs';
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const outName='site-dist',outDir=path.join(root,outName),marker='.move-site-build',receiptName='site-receipt.json';
 const MEDIA=['default-room.png','story.mp4','story-portrait.mp4','story-poster.jpg','story-poster-portrait.jpg'];
-const LANDING={'index.html':'landing/index.html','landing.css':'landing/landing.css','landing.js':'landing/landing.js','setup.md':'landing/setup.md','playground/palette.css':'landing/palette.css'};
+// The landing page itself is generated per language from landing/index.html and landing/i18n.json.
+const LANDING_PAGES=new Map(LANDING_LOCALES.map(l=>[l.path.slice(1)+'index.html',l.code]));
+const LANDING={'landing.css':'landing/landing.css','landing.js':'landing/landing.js','setup.md':'landing/setup.md','playground/palette.css':'landing/palette.css'};
 const DOCS={'source/skill-reference.md':'skills/blender-room-tour/reference.md','source/README.md':'README.md','source/LICENSE':'LICENSE'};
 const SKILL_DIR='skills/blender-room-tour';
 // The source ZIP must carry these byte-identical to this checkout, so a stale bundle cannot slip through.
@@ -197,9 +200,9 @@ function checkText(out){
   const text=data.toString('utf8');
   if(name.endsWith('.html')&&/data-palette-(?:toolbar|choice)|palette\.js|class="mp-review/.test(text))fail(name+' contains review-only palette controls');
   for(const needle of forbidden)if(text.includes(needle))fail(`${name} contains forbidden text ${JSON.stringify(needle)}`);
-  // Share cards and the X share intent need the absolute production URL; every other landing link stays root-relative.
-  const linkText=name.endsWith('.html')?text.replace(/<meta [^>]*>/g,'').replace(/href="https:\/\/x\.com\/intent\/post\?[^"]*"/g,''):text;
-  if(Object.hasOwn(LANDING,name)&&linkText.includes('move.jingtao.io'))fail(name+' must link the playground root-relatively, not to move.jingtao.io');
+  // Share cards, language alternates and the X share intent need the absolute production URL; every other landing link stays root-relative.
+  const linkText=name.endsWith('.html')?text.replace(/<meta [^>]*>|<link rel="(?:canonical|alternate)"[^>]*>/g,'').replace(/href="https:\/\/x\.com\/intent\/post\?[^"]*"/g,''):text;
+  if((Object.hasOwn(LANDING,name)||LANDING_PAGES.has(name))&&linkText.includes('move.jingtao.io'))fail(name+' must link the playground root-relatively, not to move.jingtao.io');
  }
 }
 
@@ -217,6 +220,8 @@ function main(){
 
  const out=new Map();
  for(const [name,rel] of Object.entries(LANDING))out.set(name,readProject(rel));
+ const template=readProject('landing/index.html').toString('utf8'),translations=readJson('landing/i18n.json');
+ for(const [name,code] of LANDING_PAGES)out.set(name,Buffer.from(localizeLanding(template,code,translations)));
  for(const name of MEDIA)out.set('assets/'+name,media.files[name]);
  for(const [name,data] of Object.entries(release.files))out.set('play/'+name,data);
  out.set('source/blender-room-tour.zip',skillZip);

@@ -665,45 +665,13 @@ main {
   padding: 0 var(--gutter) 40px;
 }
 
-.footer-cta {
-  display: flex;
-  flex-wrap: wrap;
+.footer-x {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 20px 32px;
-  padding: clamp(32px, 5vw, 56px) 0;
-  border-top: 1px solid var(--edge);
-}
-
-.footer-line {
-  font-size: clamp(1.625rem, 3vw, 2.25rem);
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-}
-
-.footer-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px 24px;
-}
-
-.footer-meta {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 8px 32px;
+  min-height: 44px;
   padding-top: 20px;
   border-top: 1px solid var(--edge);
-  color: var(--muted);
-  font-size: 0.9375rem;
-}
-
-.footer-meta a {
-  display: inline-block;
-  padding: 10px 0;
-  margin: -10px 0;
+  width: 100%;
   font-weight: 600;
 }
 
@@ -809,7 +777,8 @@ main {
   .repo-name,
   .repo-note,
   .pill,
-  .footer-meta,
+  .footer-x,
+  .lang-select,
   .skip-link {
     font-size: 18px;
   }
@@ -840,14 +809,6 @@ main {
     min-height: 48px;
   }
 
-  .footer-line {
-    font-size: 28px;
-  }
-
-  .footer-actions,
-  .footer-actions .btn {
-    width: 100%;
-  }
 }
 
 /* Same film, portrait cut, on narrow screens. Matches the <source media> query. */
@@ -968,4 +929,64 @@ main {
   .follow-actions .btn {
     width: 100%;
   }
+}
+
+/* ---------- Language menu ---------- */
+
+.lang-select {
+  min-height: 44px;
+  padding: 0 28px 0 10px;
+  border: 1px solid var(--edge);
+  border-radius: 8px;
+  background: var(--card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23666' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 10px center;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  appearance: none;
+  cursor: pointer;
+}
+
+.lang-select:hover {
+  border-color: var(--accent);
+}
+
+/* Phone: logo, language and follow fit on one header row. */
+@media (max-width: 640px) {
+  .site-header {
+    gap: 8px;
+  }
+
+  /* The menu shrinks to a globe; tapping it still opens the native language list. */
+  .lang-select {
+    width: 44px;
+    padding: 0;
+    color: transparent;
+    background: var(--card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none' stroke='%23555' stroke-width='1.4'%3E%3Ccircle cx='10' cy='10' r='8'/%3E%3Cpath d='M2 10h16M10 2c2.5 2.2 3.6 5 3.6 8s-1.1 5.8-3.6 8c-2.5-2.2-3.6-5-3.6-8s1.1-5.8 3.6-8z'/%3E%3C/svg%3E") no-repeat center;
+  }
+
+  .lang-select option {
+    color: var(--ink);
+  }
+
+  .site-nav .nav-follow {
+    padding: 0 12px;
+  }
+}
+
+/* Korean wraps at spaces; Japanese headings break between phrases. Neither breaks inside a word. */
+:lang(ko) {
+  word-break: keep-all;
+}
+
+:lang(ja) h1,
+:lang(ja) h2,
+:lang(ja) h3,
+:lang(ja) .follow-line {
+  word-break: auto-phrase;
+}
+
+h1,
+h2 {
+  text-wrap: balance;
 }

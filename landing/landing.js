@@ -1,8 +1,28 @@
-if (location.pathname === '/' && location.hash.startsWith('#layout=')) {
-  location.replace('/play/' + location.search + location.hash);
+/* The landing exists at one path per language. The root follows the language this visitor chose before
+   (the playground saves the same key) or the browser's language; a language path someone linked to stays put. */
+var LANDING_PATHS = { 'zh-Hans': '/zh-hans/', 'zh-Hant': '/zh-hant/', ja: '/ja/', ko: '/ko/', en: '/', es: '/es/' };
+var LANGUAGE_KEY = 'move-demo:language';
+
+// Same mapping as normalizeLocale in i18n.mjs.
+function landingLocale(value) {
+  var v = String(value || '').toLowerCase();
+  if (v.indexOf('zh') === 0) return v.indexOf('hans') >= 0 ? 'zh-Hans' : /hant|tw|hk|mo/.test(v) ? 'zh-Hant' : 'zh-Hans';
+  var codes = ['ja', 'ko', 'en', 'es'];
+  for (var i = 0; i < codes.length; i++) if (v === codes[i] || v.indexOf(codes[i] + '-') === 0) return codes[i];
+  return 'en';
 }
 
-/* Move landing: copy-to-clipboard, setup guide URL and film source. */
+if (location.pathname === '/' && location.hash.indexOf('#layout=') === 0) {
+  location.replace('/play/' + location.search + location.hash);
+} else if (location.pathname === '/') {
+  var savedLanguage = null;
+  try { savedLanguage = localStorage.getItem(LANGUAGE_KEY); } catch (e) { savedLanguage = null; }
+  var browserLanguage = (navigator.languages && navigator.languages[0]) || navigator.language;
+  var landingLanguage = landingLocale(savedLanguage || browserLanguage);
+  if (landingLanguage !== 'en') location.replace(LANDING_PATHS[landingLanguage] + location.search + location.hash);
+}
+
+/* Move landing: copy-to-clipboard, setup guide URL, film source and language menu. */
 (function () {
   'use strict';
 
@@ -79,10 +99,10 @@ if (location.pathname === '/' && location.hash.startsWith('#layout=')) {
     copyText(text).then(function (ok) {
       button.focus({ preventScroll: true });
       if (ok) {
-        showStatus(statusEl, 'Copied', 2500);
+        showStatus(statusEl, button.getAttribute('data-copied') || 'Copied', 2500);
       } else {
         selectElementText(source);
-        showStatus(statusEl, 'Select and copy the command', 0);
+        showStatus(statusEl, button.getAttribute('data-copy-fallback') || 'Select and copy the command', 0);
       }
     });
   }
@@ -105,7 +125,7 @@ if (location.pathname === '/' && location.hash.startsWith('#layout=')) {
         var revision = 0, switching = false, position = 0, resume = false;
         function selectFilm(initial) {
           var portrait = media.matches;
-          video.poster = portrait ? 'assets/story-poster-portrait.jpg' : 'assets/story-poster.jpg';
+          video.poster = portrait ? '/assets/story-poster-portrait.jpg' : '/assets/story-poster.jpg';
           // The source media attribute selects the initial file before this script runs.
           if (initial) return;
           if (!switching) {
@@ -121,7 +141,7 @@ if (location.pathname === '/' && location.hash.startsWith('#layout=')) {
             switching = false;
             if (resume) video.play().catch(function () {});
           }, { once: true });
-          video.src = portrait ? 'assets/story-portrait.mp4#t=0.001' : 'assets/story.mp4';
+          video.src = portrait ? '/assets/story-portrait.mp4#t=0.001' : '/assets/story.mp4';
           video.load();
         }
         selectFilm(true);
@@ -131,8 +151,21 @@ if (location.pathname === '/' && location.hash.startsWith('#layout=')) {
     }
   }
 
+  // Choosing a language saves it for the landing and the playground, then opens that language's page.
+  function prepareLanguageMenu() {
+    var select = document.querySelector('[data-lang-select]');
+    if (!select) return;
+    select.addEventListener('change', function () {
+      var path = LANDING_PATHS[select.value];
+      if (!path) return;
+      try { localStorage.setItem(LANGUAGE_KEY, select.value); } catch (e) { /* The page still changes language. */ }
+      location.href = path + location.hash;
+    });
+  }
+
   function init() {
     fillSetupUrl();
+    prepareLanguageMenu();
 
     var copyButtons = document.querySelectorAll('[data-copy-target]');
     for (var i = 0; i < copyButtons.length; i++) {

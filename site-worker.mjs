@@ -2,7 +2,9 @@
 // Needs the same ASSETS and SHARES bindings as worker.mjs. It is an adapter for an existing host, not a deployment.
 import worker from './worker.mjs';
 // Every static path the site serves. Anything else is a 404, never the index page.
-const STATIC=/^\/(?:|landing\.(?:css|js)|setup\.md|assets\/[\w-][\w.-]*|playground\/palette\.css|play\/(?:[\w-]+\/)*(?:[\w-][\w.-]*)?|source\/[\w-][\w.-]*)$/;
+const STATIC=/^\/(?:|(?:zh-hans|zh-hant|ja|ko|es)\/|landing\.(?:css|js)|setup\.md|assets\/[\w-][\w.-]*|playground\/palette\.css|play\/(?:[\w-]+\/)*(?:[\w-][\w.-]*)?|source\/[\w-][\w.-]*)$/;
+// The landing in its other five languages; English is the root.
+const LANGUAGE_PATH=/^\/(zh-hans|zh-hant|ja|ko|es)(\/index\.html)?$/;
 const PLAY_SHARE=/^\/play\/api\/share(?:\/[\w-]{16})?$/;
 const LANDING_MEDIA=new Set(['default-room.png','story.mp4','story-portrait.mp4','story-poster.jpg','story-poster-portrait.jpg']);
 // /x is the landing's follow link: a countable request that goes on to the X follow dialog.
@@ -67,6 +69,8 @@ export default {async fetch(request,env){
  if(path==='/play')return redirect('/play/'+query,301);
  if(path==='/playground'||path==='/playground/')return redirect('/play/'+query);
  if(path==='/x')return redirect(FOLLOW_X);
+ const language=LANGUAGE_PATH.exec(path);
+ if(language)return redirect(`/${language[1]}/`+query,301);
  if(path==='/index.html')return redirect('/'+query,301);
  if(path==='/play/index.html')return redirect('/play/'+query,301);
  // Cached old playground pages and existing asset URLs keep working after the root becomes the landing.
