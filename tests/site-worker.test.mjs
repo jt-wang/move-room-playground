@@ -4,6 +4,16 @@ import {DEFAULT_LAYOUT,encodeLayout} from '../layout.mjs';
 const origin='http://127.0.0.1:64358';
 function makeEnv(){const seen=[],shares=new Map();return {seen,env:{SHARES:{async get(id){return shares.get(id)??null;},async put(id,value){shares.set(id,value);}},ASSETS:{async fetch(req){seen.push(new URL(req.url).pathname);return new Response('asset');}}}};}
 const call=(env,pathname,init)=>siteWorker.fetch(new Request(origin+pathname,init),env);
+test('video byte ranges work even when an asset binding returns the full file',async()=>{
+ const env={ASSETS:{async fetch(){return new Response('0123456789',{headers:{'Content-Length':'10',ETag:'"film"'}});}}};
+ for(const [range,text] of [['bytes=0-2','012'],['bytes=4-','456789'],['bytes=-3','789'],['bytes=8-99','89']]){
+  const r=await call(env,'/assets/story.mp4',{headers:{range}});assert.equal(r.status,206);assert.equal(await r.text(),text);assert.equal(r.headers.get('accept-ranges'),'bytes');
+ }
+ for(const range of ['bytes=10-','bytes=-0','bytes=5-2']){const r=await call(env,'/assets/story.mp4',{headers:{range}});assert.equal(r.status,416);assert.equal(r.headers.get('content-range'),'bytes */10');}
+ const stale=await call(env,'/assets/story.mp4',{headers:{range:'bytes=0-2','if-range':'"old"'}});assert.equal(stale.status,200);assert.equal(await stale.text(),'0123456789');
+ const native={MEDIA_SIZES:{'/assets/story.mp4':10},ASSETS:{async fetch(){return new Response('0123456789');}}};
+ const fallback=await call(native,'/assets/story.mp4',{headers:{range:'bytes=2-4'}});assert.equal(fallback.status,206);assert.equal(await fallback.text(),'234');
+});
 test('existing playground binding preserves API body, origin and shared-room queries',async()=>{
  const {env,seen}=makeEnv(),forwarded=[];
  env.PLAYGROUND={async fetch(req){forwarded.push({url:req.url,method:req.method,origin:req.headers.get('origin'),body:await req.text()});return new Response('existing');}};

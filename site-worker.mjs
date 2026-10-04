@@ -16,6 +16,37 @@ function playgroundRequest(request,pathname){
  if(!['GET','HEAD'].includes(request.method)){init.body=request.body;init.duplex='half';}
  return new Request(target,init);
 }
+// Some asset bindings ignore Range. Stream a single requested video range without buffering the film.
+async function staticAsset(request,env){
+ const response=await env.ASSETS.fetch(request);
+ if(request.method!=='GET'||!new URL(request.url).pathname.endsWith('.mp4')||response.status!==200)return response;
+ const raw=request.headers.get('range'),match=/^bytes=(\d*)-(\d*)$/.exec(raw||'');
+ if(!match||(!match[1]&&!match[2]))return response;
+ const validator=request.headers.get('if-range');
+ if(validator&&validator!==response.headers.get('etag')&&validator!==response.headers.get('last-modified'))return response;
+ // Native asset bodies can omit Content-Length inside the Worker. Deployment supplies their verified sizes.
+ const length=response.headers.get('content-length')||env.MEDIA_SIZES?.[new URL(request.url).pathname],size=Number(length);
+ if(!length||!Number.isSafeInteger(size)||size<0||!response.body)return response;
+ let start,end;
+ if(!match[1]){const suffix=Number(match[2]);start=Math.max(0,size-suffix);end=size-1;}
+ else{start=Number(match[1]);end=match[2]?Math.min(Number(match[2]),size-1):size-1;}
+ const headers=new Headers(response.headers);headers.set('Accept-Ranges','bytes');
+ if(!Number.isSafeInteger(start)||!Number.isSafeInteger(end)||start>end||start>=size){
+  await response.body.cancel();headers.set('Content-Range',`bytes */${size}`);headers.delete('Content-Length');
+  return new Response(null,{status:416,headers});
+ }
+ headers.set('Content-Range',`bytes ${start}-${end}/${size}`);headers.set('Content-Length',String(end-start+1));
+ const reader=response.body.getReader();let offset=0;
+ const body=new ReadableStream({async pull(controller){
+  try{while(true){
+   const {done,value}=await reader.read();if(done){controller.close();return;}
+   const from=Math.max(0,start-offset),to=Math.min(value.byteLength,end+1-offset);offset+=value.byteLength;
+   if(to>from)controller.enqueue(value.subarray(from,to));
+   if(offset>end){controller.close();await reader.cancel();return;}
+   if(to>from)return;
+  }}catch(error){controller.error(error);}},cancel(reason){return reader.cancel(reason);}});
+ return new Response(body,{status:206,headers});
+}
 export default {async fetch(request,env){
  const url=new URL(request.url),path=url.pathname,query=url.search;
  if(env.PLAYGROUND?.fetch&&(path.startsWith('/api/')||PLAY_SHARE.test(path)))
@@ -42,5 +73,5 @@ export default {async fetch(request,env){
  if(env.PLAYGROUND?.fetch&&path.startsWith('/play/')&&STATIC.test(path))
   return env.PLAYGROUND.fetch(playgroundRequest(request,path.slice(5)));
  if(!STATIC.test(path)||!env.ASSETS)return plain('Not found',404);
- return env.ASSETS.fetch(request);
+ return staticAsset(request,env);
 }};

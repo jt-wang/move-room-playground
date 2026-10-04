@@ -81,6 +81,8 @@ PORT=64358 MOVE_PREVIEW_HOSTS=<interface-ip> npm run serve:site
 | `/play/api/share[/<id>]` | The same `worker.mjs` share handler |
 | Anything else | 404, never the landing |
 
+For asset bindings that omit `Content-Length` inside the Worker, supply a `MEDIA_SIZES` JSON binding mapping each served video path to its verified byte count. The adapter streams valid single-byte ranges and leaves the video bytes unchanged. Keep these deployment inputs outside the public source.
+
 The old `/#layout=…` links are forwarded to `/play/` by `landing.js`. With the existing playground service bound, root-level playground assets and its old app/style URLs still resolve for cached pages and old links; the landing media paths stay with the new site.
 
 ## Publication and deployment procedure
