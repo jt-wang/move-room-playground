@@ -1,6 +1,6 @@
 # Site and release
 
-Everything here is local-ready, not published. No repository, release, upload or deployment has been made. The v2.1 playground runtime and the `blender-room-tour` skill are byte-identical to the tested v2.1 version. The site build adds files around them and changes neither.
+The public repository and skill Release are available on GitHub. Website deployment uses separate approved media and existing hosting bindings. The v2.1 playground runtime and the `blender-room-tour` skill are byte-identical to the tested v2.1 version. The site build adds files around them and changes neither.
 
 ## What gets built
 
@@ -81,14 +81,14 @@ PORT=64358 MOVE_PREVIEW_HOSTS=<interface-ip> npm run serve:site
 | `/play/api/share[/<id>]` | The same `worker.mjs` share handler |
 | Anything else | 404, never the landing |
 
-The old `/#layout=…` links are forwarded to `/play/` by `landing.js`.
+The old `/#layout=…` links are forwarded to `/play/` by `landing.js`. With the existing playground service bound, root-level playground assets and its old app/style URLs still resolve for cached pages and old links; the landing media paths stay with the new site.
 
-## Publication handoff (not performed)
+## Publication and deployment procedure
 
-1. Select the correct GitHub owner and confirm the owner is authorized to publish. Create or push `jt-wang/move-room-playground` from the source bundle only.
+1. Publish only the reviewed clean source under `jt-wang/move-room-playground`, never a private working directory or old history.
 2. Publish a release whose asset is named exactly `blender-room-tour.zip`, the same bytes as `/source/blender-room-tour.zip`. The landing uses `releases/latest/download/blender-room-tour.zip`, so no version tag is hard-coded.
 3. Only after both public URLs load: set `state` to `"published"` in `landing/publication.json`, and turn the two `data-release-url` spans in `landing/index.html` into `<a href>` links with the same URL. Remove their pending pills, the pending wording in the Get started panel and review bar, and the `Status: unpublished.` section of `landing/setup.md`. Then update the README status line and rebuild. The build refuses a half-switched state.
 4. Deploy on the existing host. Route requests through `site-worker.mjs`, with `ASSETS` serving `site-dist/`. For the existing live homes, bind `PLAYGROUND` to the existing playground service: the adapter strips `/play` from playground requests and forwards both share API paths unchanged in origin, query and body. Keep that service's existing assets, share KV and limiters intact. This avoids moving its prepared homes or breaking old room/share IDs. Without `PLAYGROUND`, the adapter serves the clean v2.1 invented practice room and uses the existing `SHARES` API binding; that is the default local/source-demo mode. Do not replace the live multi-home service with the synthetic demo. No private production data belongs in this repository.
 5. Smoke-test production: `/`, `/play/`, an old `/?s=<existing id>` link (it must open the same layout under `/play/`), `/?room=…`, a new share created and reopened, `/setup.md`, film range requests, and unknown paths returning 404.
 6. From a clean directory, after publication, run `npx skills add jt-wang/move-room-playground --skill blender-room-tour` for each agent and check that `SKILL.md` lands in the project folder, then run `doctor`.
-7. Decide whether the palette review bar stays. It is preview tooling and is injected only at site build time.
+7. Keep the selectable landing palettes until a final palette is chosen. The existing playground is served unchanged through its service binding.

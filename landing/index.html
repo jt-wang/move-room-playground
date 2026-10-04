@@ -16,8 +16,8 @@
   <div class="mp-review" role="region" aria-label="Palette review">
     <div class="mp-review-inner">
       <div class="mp-palette" data-palette-toolbar></div>
-      <a class="mp-link" href="/play/?palette=a" data-palette-link>Playground palette preview</a>
-      <p class="mp-notice">Local preview · <span class="mp-notice-full">GitHub repository and one-line install pending publication.</span><span class="mp-notice-short">GitHub and install pending.</span></p>
+      <a class="mp-link" href="/play/?palette=a" data-palette-link>Playground</a>
+      <p class="mp-notice"><span class="mp-notice-full">Choose a palette · The skill is available on GitHub.</span><span class="mp-notice-short">Choose a palette · Skill available.</span></p>
     </div>
   </div>
 
@@ -117,8 +117,8 @@
         </div>
 
         <div class="panel-block">
-          <p class="panel-label">Install, after release</p>
-          <p class="install-note">Not available yet. The repository and installer are pending publication; this is the command you’ll run once they’re released.</p>
+          <p class="panel-label">Install the skill</p>
+          <p class="install-note">Run this in your project to install the skill for Claude Code or Codex.</p>
           <div class="command-row">
             <pre class="command-box"><code id="skill-command" class="command"><span class="tok">npx skills add</span> <span class="tok">jt-wang/</span><wbr><span class="tok">move-room-playground</span> <span class="tok">--skill</span> <span class="tok">blender-room-tour</span></code></pre>
             <button type="button" class="btn btn-primary js-only" data-copy-target="skill-command" data-copy-status="skill-copy-status">Copy</button>
@@ -160,8 +160,7 @@
             <li>Ask your agent to read its <code>SKILL.md</code> and run <code>doctor</code> (<code>doctor --stills</code> for screened images only). It reports missing tools; it doesn’t install them.</li>
           </ol>
           <div class="pending-row">
-            <span class="btn btn-secondary" role="link" aria-disabled="true" data-download-kind="github-release-asset" data-release-url="https://github.com/jt-wang/move-room-playground/releases/latest/download/blender-room-tour.zip">Download skill</span>
-            <span class="pill">GitHub release pending</span>
+            <a class="btn btn-secondary" data-download-kind="github-release-asset" data-release-url="https://github.com/jt-wang/move-room-playground/releases/latest/download/blender-room-tour.zip" href="https://github.com/jt-wang/move-room-playground/releases/latest/download/blender-room-tour.zip">Download skill</a>
           </div>
         </details>
 
@@ -170,8 +169,7 @@
           <p class="repo-name"><code>jt-wang/move-room-playground</code></p>
           <p class="repo-note">The playground, the invented practice room and the skill, in one repository.</p>
           <p class="pending-row">
-            <span class="btn btn-secondary" role="link" aria-disabled="true" data-release-url="https://github.com/jt-wang/move-room-playground">View on GitHub</span>
-            <span class="pill">Pending publication</span>
+            <a class="btn btn-secondary" data-release-url="https://github.com/jt-wang/move-room-playground" href="https://github.com/jt-wang/move-room-playground">View on GitHub</a>
           </p>
         </div>
       </div>

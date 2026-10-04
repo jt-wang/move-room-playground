@@ -2,17 +2,15 @@
 
 **Turn room videos into explorable 3D models with your coding agent.**
 
-> Status: local-ready, not yet published. The GitHub repository, its release asset and the one-line install below are pending publication.
+[Download the skill ZIP](https://github.com/jt-wang/move-room-playground/releases/latest/download/blender-room-tour.zip) · [Agent setup guide](https://move.jingtao.io/setup.md)
 
 ## Install the skill
-
-After publication:
 
 ```sh
 npx skills add jt-wang/move-room-playground --skill blender-room-tour
 ```
 
-Works with Claude Code and Codex. Until then, copy the whole [`skills/blender-room-tour/`](skills/blender-room-tour/SKILL.md) folder into your project (`.claude/skills/` for Claude Code, `.agents/skills/` for Codex). [Setup](skills/blender-room-tour/reference.md#requirements).
+Works with Claude Code and Codex. For manual installation, download and copy the whole [`skills/blender-room-tour/`](skills/blender-room-tour/SKILL.md) folder into your project (`.claude/skills/` for Claude Code, `.agents/skills/` for Codex). [Setup](skills/blender-room-tour/reference.md#requirements).
 
 Then ask your agent:
 

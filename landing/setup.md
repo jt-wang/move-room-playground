@@ -2,7 +2,7 @@
 
 For a coding agent (Claude Code or Codex) helping a person turn their own walkthrough into an editable Blender room. Read this whole file before you act.
 
-Status: unpublished. The GitHub repository, its release asset and the `npx skills` install are pending publication and do not work yet. Don't search for, or substitute, another copy of the skill.
+Status: published. Use the official `jt-wang/move-room-playground` repository and its `blender-room-tour.zip` Release asset.
 
 ## 1. Confirm the scope
 
@@ -18,15 +18,15 @@ If a tool is missing, report it and stop. Don't install or upgrade anything your
 
 ## 3. Get the whole skill folder
 
-**Private local preview (now).** The ZIP is served next to this guide, at `/source/blender-room-tour.zip` on the same origin you read this file from (for example `http://127.0.0.1:PORT/source/blender-room-tour.zip`). It's for authorized local testing only, so don't re-host or share it. Its SHA-256 is in [`/source/version.json`](/source/version.json); compare it after downloading.
-
-**Public install (after publication only).**
+Install from the official repository, from your project directory:
 
 ```sh
 npx skills add jt-wang/move-room-playground --skill blender-room-tour -a claude-code   # or: -a codex
 ```
 
-Don't add `-g`; it installs globally. The public ZIP will be `https://github.com/jt-wang/move-room-playground/releases/latest/download/blender-room-tour.zip`.
+Don't add `-g`; it installs globally. For manual setup, download `https://github.com/jt-wang/move-room-playground/releases/latest/download/blender-room-tour.zip`.
+
+Compare the downloaded ZIP SHA-256 with the value in the GitHub Release notes or [`/source/version.json`](/source/version.json) on this site.
 
 **Placement.** Extract the complete folder and keep all files and subfolders in their original locations. Use the folder that contains `SKILL.md`, named `blender-room-tour`, at the project path for your agent:
 

@@ -4,6 +4,8 @@ import worker from './worker.mjs';
 // Every static path the site serves. Anything else is a 404, never the index page.
 const STATIC=/^\/(?:|landing\.(?:css|js)|setup\.md|assets\/[\w-][\w.-]*|playground\/palette\.(?:css|js)|play\/(?:[\w-]+\/)*(?:[\w-][\w.-]*)?|source\/[\w-][\w.-]*)$/;
 const PLAY_SHARE=/^\/play\/api\/share(?:\/[\w-]{16})?$/;
+const LANDING_MEDIA=new Set(['default-room.png','story.mp4','story-portrait.mp4','story-poster.jpg','story-poster-portrait.jpg']);
+const LEGACY_ASSET=/^\/assets\/(?:[\w-]+\/)*[\w-][\w.-]*$/;
 const plain=(text,status,extra={})=>new Response(text,{status,headers:{'Content-Type':'text/plain','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...extra}});
 const redirect=(location,status=302)=>new Response(null,{status,headers:{Location:location,'Cache-Control':'no-store'}});
 // Optional existing playground service. Keep its prepared homes and share storage in place
@@ -33,6 +35,10 @@ export default {async fetch(request,env){
  if(path==='/playground'||path==='/playground/')return redirect('/play/'+query);
  if(path==='/index.html')return redirect('/'+query,301);
  if(path==='/play/index.html')return redirect('/play/'+query,301);
+ // Cached old playground pages and existing asset URLs keep working after the root becomes the landing.
+ if(env.PLAYGROUND?.fetch&&(path==='/app.mjs'||path==='/style.css'||
+   (LEGACY_ASSET.test(path)&&!LANDING_MEDIA.has(path.slice('/assets/'.length)))))
+  return env.PLAYGROUND.fetch(request);
  if(env.PLAYGROUND?.fetch&&path.startsWith('/play/')&&STATIC.test(path))
   return env.PLAYGROUND.fetch(playgroundRequest(request,path.slice(5)));
  if(!STATIC.test(path)||!env.ASSETS)return plain('Not found',404);

@@ -14,6 +14,10 @@ test('existing playground binding preserves API body, origin and shared-room que
   assert.deepEqual(forwarded.at(-1),{url:origin+'/api/share',method:'POST',origin,body:'{"layout":"sample"}'});
  }
  await call(env,'/setup.md');assert.deepEqual(seen,['/setup.md']);
+ for(const path of ['/app.mjs','/style.css','/assets/room.glb','/assets/rooms/practice-room/room.glb']){
+  assert.equal(await (await call(env,path)).text(),'existing');assert.equal(forwarded.at(-1).url,origin+path);
+ }
+ await call(env,'/assets/story.mp4');assert.deepEqual(seen,['/setup.md','/assets/story.mp4']);
  assert.equal((await call(env,'/play/',{method:'POST'})).status,405);
 });
 test('landing, playground, palette, media and source files go to static assets',async()=>{
