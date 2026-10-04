@@ -1,0 +1,9 @@
+{
+ "state": "pending",
+ "version": "2.1",
+ "repository": "jt-wang/move-room-playground",
+ "repositoryUrl": "https://github.com/jt-wang/move-room-playground",
+ "skillAssetName": "blender-room-tour.zip",
+ "skillDownloadUrl": "https://github.com/jt-wang/move-room-playground/releases/latest/download/blender-room-tour.zip",
+ "installCommand": "npx skills add jt-wang/move-room-playground --skill blender-room-tour"
+}

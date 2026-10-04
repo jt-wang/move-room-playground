@@ -1,0 +1,52 @@
+{
+  "description": "Invented fixture: one hinged door, one sliding door and a two-panel bifold closet with a static frame. Blender Z-up metres; not any real room.",
+  "interaction": {
+    "schema_version": 2,
+    "coordinates": "blender-z-up",
+    "id": "fixture-doors",
+    "bounds": {"min": [0, -0.5, 0], "max": [5, 4, 2.5]},
+    "doors": [
+      {"id": "hall", "kind": "door", "ordinal": 1, "parts": [{"name": "HingedDoor", "angle": 90}]},
+      {"id": "slider", "kind": "door", "ordinal": 2, "parts": [{"name": "SlidingDoor", "slide": [0, 0.8, 0]}]},
+      {"id": "closet", "kind": "door", "ordinal": 3, "parts": [
+        {"name": "ClosetPanelA", "angle": -80},
+        {"name": "ClosetPanelB", "angle": 160, "parent": "ClosetPanelA"}
+      ]}
+    ]
+  },
+  "pivots": {
+    "HingedDoor": [1.0, 0.0, 0.0],
+    "SlidingDoor": [4.0, 1.4, 0.0],
+    "ClosetPanelA": [2.0, 3.0, 0.0],
+    "ClosetPanelB": [2.45, 3.0, 0.0]
+  },
+  "bounds": {
+    "HingedDoor": {"min": [1.0, -0.02, 0.0], "max": [1.8, 0.02, 2.0]},
+    "SlidingDoor": {"min": [3.98, 1.0, 0.0], "max": [4.02, 1.8, 2.0]},
+    "ClosetPanelA": {"min": [2.0, 2.99, 0.0], "max": [2.45, 3.01, 2.0]},
+    "ClosetPanelB": {"min": [2.45, 2.99, 0.0], "max": [2.9, 3.01, 2.0]}
+  },
+  "static": {"ClosetFrame": {"min": [1.95, 2.95, 0.0], "max": [2.0, 3.05, 2.1]}},
+  "probes": [
+    {"part": "HingedDoor", "point": [1.8, 0.0, 1.0], "fraction": 1, "expected": [1.0, 0.8, 1.0], "why": "+90 turns a +X leaf toward +Y"},
+    {"part": "HingedDoor", "point": [1.8, 0.0, 1.0], "fraction": 0.5, "expected": [1.565685425, 0.565685425, 1.0]},
+    {"part": "SlidingDoor", "point": [4.0, 1.8, 1.0], "fraction": 1, "expected": [4.0, 2.6, 1.0]},
+    {"part": "ClosetPanelA", "point": [2.45, 3.0, 1.0], "fraction": 1, "expected": [2.07814168, 2.556836511, 1.0]},
+    {"part": "ClosetPanelB", "point": [2.9, 3.0, 1.0], "fraction": 1, "expected": [2.15628336, 3.0, 1.0], "why": "free edge stays on the track line"},
+    {"part": "ClosetPanelA", "point": [2.45, 3.0, 1.0], "fraction": 0.5, "expected": [2.344720, 2.710746, 1.0]},
+    {"part": "ClosetPanelB", "point": [2.9, 3.0, 1.0], "fraction": 0.5, "expected": [2.689440, 3.0, 1.0]}
+  ],
+  "legacy_probe": {"part": {"name": "HingedDoor", "angle": 90}, "point": [1.8, 0.0, 1.0], "expected": [1.0, -0.8, 1.0],
+                   "why": "schema 1 angles are negated about web +Y; kept only for existing legacy imports"},
+  "runtime": {
+    "bounds": {"min": [0, 0, -4], "max": [5, 2.5, 0.5]},
+    "doors": [
+      {"id": "hall", "kind": "door", "ordinal": 1, "parts": [{"name": "HingedDoor", "yaw": 90}]},
+      {"id": "slider", "kind": "door", "ordinal": 2, "parts": [{"name": "SlidingDoor", "slide": [0, 0, -0.8]}]},
+      {"id": "closet", "kind": "door", "ordinal": 3, "parts": [
+        {"name": "ClosetPanelA", "yaw": -80},
+        {"name": "ClosetPanelB", "yaw": 160, "parent": "ClosetPanelA"}
+      ]}
+    ]
+  }
+}

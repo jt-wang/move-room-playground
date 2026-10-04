@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+"""Portable entry point: runs the bundled blender_tour_flow package next to this file."""
+import sys
+from pathlib import Path
+
+if sys.version_info < (3, 11):
+    raise SystemExit('blender-tour needs Python 3.11 or newer')
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from blender_tour_flow.cli import main
+
+raise SystemExit(main())

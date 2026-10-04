@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "coordinates": "blender-z-up",
+  "id": "invented-articulated-room",
+  "bounds": {"min": [-0.1, -0.1, 0], "max": [5.0, 3.5, 2.55]},
+  "doors": [
+    {"id": "entry", "kind": "door", "ordinal": 1, "parts": [{"name": "EntryDoor", "angle": 90}]},
+    {"id": "pantry", "kind": "door", "ordinal": 2, "parts": [{"name": "PantrySlider", "slide": [0, -0.8, 0]}]},
+    {"id": "closet", "kind": "door", "ordinal": 3, "parts": [
+      {"name": "ClosetFoldA", "angle": 80},
+      {"name": "ClosetFoldB", "angle": -160, "parent": "ClosetFoldA"}
+    ]}
+  ]
+}

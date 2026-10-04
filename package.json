@@ -1,0 +1,27 @@
+{
+  "name": "move-room",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "description": "Browser furniture playground, published with one invented practice room.",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "generate:demo": "python3 scripts/generate-demo.py",
+    "build:public": "python3 build_public.py",
+    "build:release": "node scripts/build-release.mjs",
+    "build": "npm run build:public && npm run build:release",
+    "build:site": "node scripts/build-site.mjs",
+    "serve": "node serve.mjs",
+    "serve:release": "node serve.mjs --release",
+    "serve:site": "node serve-site.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:py": "python3 -m unittest discover -s tests -p 'test_*.py' && python3 -m unittest discover -s skills/blender-room-tour/tests",
+    "test:browser": "node tests/browser-smoke.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.0",
+    "playwright": "1.55.1"
+  }
+}

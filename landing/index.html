@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en" class="no-js" data-palette="a">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Move — Learn to turn your walkthrough into a 3D room</title>
+  <meta name="description" content="A reusable workflow for Claude Code and Codex: your AI coding agent builds an editable Blender room from your walkthrough video, and you check it against the footage.">
+  <link rel="stylesheet" href="playground/palette.css">
+  <link rel="stylesheet" href="landing.css">
+  <script src="playground/palette.js"></script>
+  <script src="landing.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="mp-review" role="region" aria-label="Palette review">
+    <div class="mp-review-inner">
+      <div class="mp-palette" data-palette-toolbar></div>
+      <a class="mp-link" href="/play/?palette=a" data-palette-link>Playground palette preview</a>
+      <p class="mp-notice">Local preview · <span class="mp-notice-full">GitHub repository and one-line install pending publication.</span><span class="mp-notice-short">GitHub and install pending.</span></p>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 28 28" width="28" height="28" aria-hidden="true" focusable="false">
+        <path d="M4 13.2 14 4.5l10 8.7V24H4Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M11.2 24v-6.4h5.6V24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+      </svg>
+      <span class="brand-name">Move</span>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="#skill">How it works</a></li>
+        <li><a href="#story">Story</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <h1 id="hero-title">Learn to turn your walkthrough into a 3D room.</h1>
+        <p class="lede">Never modeled in 3D? Neither had I. An AI coding agent does the Blender work; you check it against your footage.</p>
+        <div class="actions">
+          <a class="btn btn-primary btn-main" href="#skill">Learn the workflow</a>
+        </div>
+      </div>
+
+      <figure class="hero-visual">
+        <a class="vignette" href="/play/" aria-label="Open this room in the playground">
+          <img src="assets/default-room.png" width="1052" height="807" alt="The default room in Move" loading="eager" fetchpriority="high" decoding="async">
+        </a>
+        <figcaption>
+          <span>The default room in the playground</span>
+          <a class="play-link" href="/play/">Explore this room <span aria-hidden="true">→</span></a>
+        </figcaption>
+      </figure>
+    </section>
+
+    <section class="skill section" id="skill" aria-labelledby="skill-title">
+      <div class="skill-intro">
+        <h2 id="skill-title">How you build a room from your video</h2>
+        <p class="intro">blender-room-tour is the workflow I used, packaged as a reusable skill for Claude Code and Codex. The agent handles Blender. Your part is to look at what it infers, compare it with your footage and ask for fixes. It’s hands-on practice in steering an agent through work outside your expertise, not a one-click 3D scan.</p>
+
+        <h3 class="sub-title">What you end up with</h3>
+        <ul class="gets">
+          <li><strong>The blender-room-tour skill</strong>, ready to reuse on your next walkthrough.</li>
+          <li><strong>An editable Blender scene</strong>, a .blend file you can open and change.</li>
+          <li><strong>Review renders</strong> to compare against your footage.</li>
+          <li><strong>A local viewer</strong> for exploring the room on your computer.</li>
+        </ul>
+
+        <h3 class="sub-title">How a build goes</h3>
+        <ol class="steps">
+          <li class="step">
+            <span class="step-num" aria-hidden="true">1</span>
+            <div>
+              <h4>Choose a walkthrough</h4>
+              <p>A video you filmed moving through a real space. The agent can only model what the footage shows.</p>
+            </div>
+          </li>
+          <li class="step">
+            <span class="step-num" aria-hidden="true">2</span>
+            <div>
+              <h4>Your agent studies the footage</h4>
+              <p>It pulls reference frames, writes down the layout, openings, light and materials, and turns those notes into a Blender Python recipe.</p>
+            </div>
+          </li>
+          <li class="step">
+            <span class="step-num" aria-hidden="true">3</span>
+            <div>
+              <h4>It builds the room</h4>
+              <p>From the recipe it makes the editable Blender scene, the review renders and the local viewer.</p>
+            </div>
+          </li>
+          <li class="step">
+            <span class="step-num" aria-hidden="true">4</span>
+            <div>
+              <h4>You check, then ask for fixes</h4>
+              <p>Read what it inferred and compare the renders with your footage. Where something drifts, tell it what’s wrong. Some fixes take a few rounds.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="panel" id="get-started" aria-labelledby="start-title">
+        <h3 id="start-title" class="panel-title">Get started</h3>
+
+        <div class="panel-block">
+          <p class="panel-label">You can do today</p>
+          <ul class="today">
+            <li>Pick a walkthrough video you filmed.</li>
+            <li>Install Blender, FFmpeg and Python 3.11+, the tools the agent will run.</li>
+            <li><a href="/play/">Explore the example room</a> to see what you’re building toward.</li>
+          </ul>
+        </div>
+
+        <div class="panel-block">
+          <p class="panel-label">Install, after release</p>
+          <p class="install-note">Not available yet. The repository and installer are pending publication; this is the command you’ll run once they’re released.</p>
+          <div class="command-row">
+            <pre class="command-box"><code id="skill-command" class="command"><span class="tok">npx skills add</span> <span class="tok">jt-wang/</span><wbr><span class="tok">move-room-playground</span> <span class="tok">--skill</span> <span class="tok">blender-room-tour</span></code></pre>
+            <button type="button" class="btn btn-primary js-only" data-copy-target="skill-command" data-copy-status="skill-copy-status">Copy</button>
+          </div>
+          <p id="skill-copy-status" class="copy-status" role="status"></p>
+        </div>
+
+        <div class="panel-block">
+          <p class="panel-label">Or let your agent set it up</p>
+          <p class="install-note">Paste this into Claude Code or Codex to follow <a href="/setup.md">the setup guide</a> in this project.</p>
+          <div class="command-row">
+            <pre class="command-box"><code id="agent-setup" class="command">Read <span data-setup-url>/setup.md</span> and set up blender-room-tour for this project.</code></pre>
+            <button type="button" class="btn btn-primary js-only" data-copy-target="agent-setup" data-copy-status="agent-copy-status">Copy</button>
+          </div>
+          <p id="agent-copy-status" class="copy-status" role="status"></p>
+        </div>
+
+        <div class="panel-block">
+          <p class="panel-label">Then ask your agent</p>
+          <blockquote class="prompt"><p>Use blender-room-tour to turn this walkthrough video into an editable 3D room I can explore.</p></blockquote>
+          <p class="panel-label">When a render looks off</p>
+          <blockquote class="prompt"><p>The kitchen window is wider in the video. Check the frames and fix it.</p></blockquote>
+        </div>
+
+        <details class="manual">
+          <summary>Technical details</summary>
+          <p class="panel-label">Requirements</p>
+          <ul class="reqs">
+            <li>Claude Code or Codex</li>
+            <li>Node.js / npx</li>
+            <li>Python 3.11+</li>
+            <li>Blender</li>
+            <li>FFmpeg</li>
+          </ul>
+          <p class="panel-label">Manual setup</p>
+          <ol class="paths">
+            <li>Download the skill and extract the whole <code>blender-room-tour</code> folder, keeping its scripts and assets together.</li>
+            <li>Put it in your project. Claude Code: <code>.claude/skills/blender-room-tour/</code>. Codex: <code>.agents/skills/blender-room-tour/</code>.</li>
+            <li>Ask your agent to read its <code>SKILL.md</code> and run <code>doctor</code> (<code>doctor --stills</code> for screened images only). It reports missing tools; it doesn’t install them.</li>
+          </ol>
+          <div class="pending-row">
+            <span class="btn btn-secondary" role="link" aria-disabled="true" data-download-kind="github-release-asset" data-release-url="https://github.com/jt-wang/move-room-playground/releases/latest/download/blender-room-tour.zip">Download skill</span>
+            <span class="pill">GitHub release pending</span>
+          </div>
+        </details>
+
+        <div class="panel-source" id="source">
+          <p class="panel-label">Source</p>
+          <p class="repo-name"><code>jt-wang/move-room-playground</code></p>
+          <p class="repo-note">The playground, the invented practice room and the skill, in one repository.</p>
+          <p class="pending-row">
+            <span class="btn btn-secondary" role="link" aria-disabled="true" data-release-url="https://github.com/jt-wang/move-room-playground">View on GitHub</span>
+            <span class="pill">Pending publication</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="story section" id="story" aria-labelledby="story-title">
+      <div class="story-text">
+        <h2 id="story-title">How this started</h2>
+        <p>I had no 3D modeling background. I filmed apartments I wanted to compare, then had an AI agent build each room in Blender from the footage. I checked the renders against the film and asked for fixes, over several rounds. The film tells the story in 70 seconds.</p>
+      </div>
+      <figure class="film">
+        <video controls playsinline preload="metadata" poster="assets/story-poster.jpg" aria-label="Move story film" aria-describedby="film-caption">
+          <source src="assets/story-portrait.mp4#t=0.001" type="video/mp4" media="(max-width: 600px)">
+          <source src="assets/story.mp4" type="video/mp4">
+          <a href="assets/story.mp4">Download the story film</a>
+        </video>
+        <figcaption id="film-caption">The story behind Move · 70 seconds, silent with on-screen captions.</figcaption>
+      </figure>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-cta">
+      <p class="footer-line">Start with a walkthrough you filmed.</p>
+      <div class="footer-actions">
+        <a class="btn btn-primary" href="#get-started">Get started</a>
+        <a class="play-link" href="/play/">Explore the playground <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+    <div class="footer-meta">
+      <p>By <a href="https://jingtao.io">Jingtao Wang</a> · <a href="https://x.com/thejingtao">Follow @thejingtao</a></p>
+      <p>Code: MIT. Film and apartment models: separate release permissions.</p>
+    </div>
+  </footer>
+</body>
+</html>

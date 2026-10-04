@@ -1,0 +1,40 @@
+# Dependencies and build output
+node_modules/
+public/
+release-public/
+public-receipt.json
+release-receipt.json
+.public-staging-*/
+.release-staging-*/
+site-dist/
+site-receipt.json
+.site-staging-*/
+output/
+
+# Local share store, metrics and secrets
+.shares/
+*.jsonl
+.env
+.env.*
+.dev.vars
+*.pem
+*.key
+wrangler.toml
+wrangler.jsonc
+
+# Blender and video jobs stay outside the repository
+jobs/
+private/
+*.blend
+*.blend1
+*.mp4
+*.mov
+*.m4v
+*.mkv
+*.webm
+*.heic
+
+# Tooling
+__pycache__/
+*.pyc
+.DS_Store

@@ -1,0 +1,40 @@
+// Integrated site routing: learner landing at /, bundled playground at /play/, share API from worker.mjs unchanged.
+// Needs the same ASSETS and SHARES bindings as worker.mjs. It is an adapter for an existing host, not a deployment.
+import worker from './worker.mjs';
+// Every static path the site serves. Anything else is a 404, never the index page.
+const STATIC=/^\/(?:|landing\.(?:css|js)|setup\.md|assets\/[\w-][\w.-]*|playground\/palette\.(?:css|js)|play\/(?:[\w-]+\/)*(?:[\w-][\w.-]*)?|source\/[\w-][\w.-]*)$/;
+const PLAY_SHARE=/^\/play\/api\/share(?:\/[\w-]{16})?$/;
+const plain=(text,status,extra={})=>new Response(text,{status,headers:{'Content-Type':'text/plain','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...extra}});
+const redirect=(location,status=302)=>new Response(null,{status,headers:{Location:location,'Cache-Control':'no-store'}});
+// Optional existing playground service. Keep its prepared homes and share storage in place
+// when adding the landing to an existing deployment; never copy them into the reusable export.
+function playgroundRequest(request,pathname){
+ const target=new URL(request.url);target.pathname=pathname;
+ const init={method:request.method,headers:request.headers};
+ if(!['GET','HEAD'].includes(request.method)){init.body=request.body;init.duplex='half';}
+ return new Request(target,init);
+}
+export default {async fetch(request,env){
+ const url=new URL(request.url),path=url.pathname,query=url.search;
+ if(env.PLAYGROUND?.fetch&&(path.startsWith('/api/')||PLAY_SHARE.test(path)))
+  return env.PLAYGROUND.fetch(playgroundRequest(request,path.startsWith('/play/')?path.slice(5):path));
+ if(path.startsWith('/api/'))return worker.fetch(request,env);
+ // Same handler and Origin check for a client that resolves api/share relative to /play/.
+ if(PLAY_SHARE.test(path)){
+  const target=new URL(url);target.pathname=path.slice('/play'.length);
+  const init={method:request.method,headers:request.headers};
+  if(!['GET','HEAD'].includes(request.method)){init.body=request.body;init.duplex='half';}
+  return worker.fetch(new Request(target,init),env);
+ }
+ if(!['GET','HEAD'].includes(request.method))return plain('Method not allowed',405,{Allow:'GET, HEAD'});
+ // Old links: shares and room picks used to open the playground at the root.
+ if(path==='/'&&(url.searchParams.has('s')||url.searchParams.has('room')))return redirect('/play/'+query);
+ if(path==='/play')return redirect('/play/'+query,301);
+ if(path==='/playground'||path==='/playground/')return redirect('/play/'+query);
+ if(path==='/index.html')return redirect('/'+query,301);
+ if(path==='/play/index.html')return redirect('/play/'+query,301);
+ if(env.PLAYGROUND?.fetch&&path.startsWith('/play/')&&STATIC.test(path))
+  return env.PLAYGROUND.fetch(playgroundRequest(request,path.slice(5)));
+ if(!STATIC.test(path)||!env.ASSETS)return plain('Not found',404);
+ return env.ASSETS.fetch(request);
+}};

@@ -1,0 +1,876 @@
+/* Move landing preview. Palette colors and the review toolbar come from playground/palette.css.
+   One typeface family: hierarchy comes from size, weight and spacing. */
+
+:root {
+  --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: "SF Mono", Menlo, Consolas, "DejaVu Sans Mono", "Liberation Mono", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --page: 1200px;
+  --gutter: clamp(20px, 5vw, 56px);
+  --radius: 14px;
+  --shadow: 0 1px 0 color-mix(in srgb, var(--ink) 14%, transparent);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: clamp(2.75rem, 5vw, 4rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+}
+
+h2 {
+  font-size: clamp(1.875rem, 3vw, 2.5rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+
+h3,
+h4 {
+  font-size: 1.1875rem;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+}
+
+a {
+  color: var(--accent);
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+code,
+pre {
+  font-family: var(--mono);
+}
+
+code {
+  font-size: 0.9em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+[id] {
+  scroll-margin-top: 24px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -100px;
+  z-index: 10;
+  padding: 10px 16px;
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: 8px;
+}
+
+.skip-link:focus {
+  top: 12px;
+}
+
+/* No-JS: hide controls that need scripting. The command stays visible and selectable. */
+.no-js .js-only {
+  display: none;
+}
+
+/* ---------- Review toolbar (shared from playground/palette.css) ---------- */
+
+.mp-review {
+  font-family: var(--sans);
+}
+
+.mp-review-inner {
+  max-width: calc(var(--page) + 2 * var(--gutter));
+  padding-inline: var(--gutter);
+}
+
+/* ---------- Header ---------- */
+
+.site-header {
+  max-width: calc(var(--page) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 20px var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: 12px 32px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.brand-mark {
+  color: var(--accent);
+}
+
+.brand-name {
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.site-nav {
+  margin-left: auto;
+}
+
+.site-nav ul {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  color: var(--ink);
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 8px;
+}
+
+.site-nav a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+/* ---------- Buttons and links ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 22px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+.btn:hover {
+  text-decoration: none;
+}
+
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+.btn-main {
+  min-height: 52px;
+  padding: 0 28px;
+  font-size: 1.0625rem;
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 80%, var(--ink));
+  color: #FFFFFF;
+}
+
+.btn-primary:hover {
+  background: color-mix(in srgb, var(--accent) 88%, var(--ink));
+}
+
+.btn-secondary {
+  background: var(--card);
+  border-color: var(--edge);
+  color: var(--ink);
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent);
+}
+
+.btn[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.65;
+  box-shadow: none;
+}
+
+.btn[aria-disabled="true"]:hover {
+  border-color: var(--edge);
+}
+
+.btn[aria-disabled="true"]:active {
+  transform: none;
+}
+
+/* Secondary text link to the playground: proof, not the main path. */
+.play-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .btn,
+  .site-nav a,
+  .vignette {
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+}
+
+/* ---------- Layout ---------- */
+
+main {
+  max-width: calc(var(--page) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.section {
+  padding-top: clamp(80px, 9vw, 120px);
+}
+
+/* ---------- Hero: the learner invitation, one action, the actual room ---------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: clamp(32px, 5vw, 72px);
+  padding-top: clamp(16px, 4vw, 56px);
+}
+
+.lede {
+  max-width: 28em;
+  margin-top: 24px;
+  font-size: clamp(1.125rem, 1.5vw, 1.3125rem);
+  line-height: 1.5;
+}
+
+.actions {
+  margin-top: 32px;
+}
+
+/* The room image links to the playground; the image itself is shown uncropped and untinted. */
+.vignette {
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--edge);
+  border-radius: 22px;
+}
+
+.vignette:hover {
+  border-color: var(--accent);
+}
+
+.vignette:focus-visible {
+  border-radius: 22px;
+}
+
+.vignette img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1052 / 807;
+  object-fit: contain;
+}
+
+.hero-visual figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 16px;
+  margin-top: 6px;
+  padding: 0 4px;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+/* ---------- Story ---------- */
+
+.story {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  align-items: center;
+  gap: clamp(32px, 6vw, 80px);
+}
+
+.story-text p {
+  max-width: 32em;
+  margin-top: 20px;
+  color: var(--muted);
+}
+
+.film video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--edge);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.film figcaption {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+/* ---------- Skill: what you get and how it goes on the left, getting started on the right ---------- */
+
+.skill {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(32px, 6vw, 80px);
+}
+
+.intro {
+  max-width: 32em;
+  margin-top: 20px;
+  color: var(--muted);
+}
+
+.sub-title {
+  margin-top: 44px;
+}
+
+.gets {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gets li {
+  padding: 12px 0 12px 18px;
+  border-left: 2px solid var(--edge);
+  color: var(--muted);
+}
+
+.gets li + li {
+  margin-top: 4px;
+}
+
+.gets strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.steps {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 16px;
+  padding: 20px 0;
+  border-top: 1px solid var(--edge);
+}
+
+.step-num {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  color: var(--accent);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.step p {
+  margin-top: 6px;
+  color: var(--muted);
+}
+
+/* The only boxed panel below the hero: the reader's first step now, and the install later. */
+.panel {
+  min-width: 0;
+  padding: clamp(22px, 3vw, 32px);
+  border: 1px solid var(--edge);
+  border-radius: 20px;
+  background: var(--card);
+}
+
+.panel-title {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.panel-block + .panel-block {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--edge);
+}
+
+.panel-label {
+  margin-bottom: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.today {
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+.today li + li {
+  margin-top: 8px;
+}
+
+.today li::marker {
+  color: var(--accent);
+}
+
+.install-note {
+  margin-bottom: 14px;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.command-row {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.command-box {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 13px 16px;
+  border: 1px solid var(--edge);
+  border-radius: 10px;
+  background: var(--bg);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.command {
+  color: var(--ink);
+  -webkit-user-select: all;
+  user-select: all;
+}
+
+/* Wrap the command only between tokens and after "jt-wang/", never inside a name. */
+.command [data-setup-url] {
+  overflow-wrap: anywhere;
+}
+
+.command .tok {
+  white-space: nowrap;
+}
+
+.command-row .btn {
+  flex: none;
+  min-width: 88px;
+}
+
+.copy-status {
+  margin-top: 8px;
+  color: var(--accent);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.copy-status:empty {
+  display: none;
+}
+
+.prompt {
+  padding: 2px 0 2px 18px;
+  border-left: 2px solid var(--accent);
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+
+.prompt + .panel-label {
+  margin-top: 20px;
+}
+
+.manual {
+  margin-top: 20px;
+}
+
+.manual summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  width: fit-content;
+  font-weight: 600;
+  list-style: none;
+  cursor: pointer;
+}
+
+.manual summary::before {
+  content: "+";
+  display: inline-block;
+  width: 1.2em;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.manual[open] summary::before {
+  content: "−";
+}
+
+.manual summary::-webkit-details-marker {
+  display: none;
+}
+
+.manual .panel-label {
+  margin-top: 16px;
+}
+
+.reqs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reqs li {
+  padding: 5px 12px;
+  border: 1px solid var(--edge);
+  border-radius: 999px;
+  background: var(--bg);
+  font-size: 0.9375rem;
+}
+
+.paths {
+  margin: 0 0 16px;
+  padding-left: 1.2em;
+  font-size: 0.9375rem;
+}
+
+.paths li + li {
+  margin-top: 6px;
+}
+
+.paths li::marker {
+  color: var(--accent);
+}
+
+.paths code {
+  overflow-wrap: anywhere;
+}
+
+.panel-source {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--edge);
+}
+
+.repo-name {
+  overflow-wrap: anywhere;
+}
+
+.repo-note {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+/* A disabled control and its status pill, aligned on one row. */
+.pending-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.panel-source .pending-row {
+  margin-top: 16px;
+}
+
+.pill {
+  padding: 3px 10px;
+  border: 1px solid var(--edge);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  max-width: calc(var(--page) + 2 * var(--gutter));
+  margin: clamp(88px, 11vw, 136px) auto 0;
+  padding: 0 var(--gutter) 40px;
+}
+
+.footer-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px 32px;
+  padding: clamp(32px, 5vw, 56px) 0;
+  border-top: 1px solid var(--edge);
+}
+
+.footer-line {
+  font-size: clamp(1.625rem, 3vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+}
+
+.footer-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--edge);
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.footer-meta a {
+  display: inline-block;
+  padding: 10px 0;
+  margin: -10px 0;
+  font-weight: 600;
+}
+
+/* ---------- Tablet ---------- */
+
+@media (max-width: 900px) {
+  .hero,
+  .story,
+  .skill {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-visual {
+    max-width: 720px;
+  }
+}
+
+/* ---------- Phone: prose 20px, controls and helper text 18px ---------- */
+
+@media (max-width: 640px) {
+  body {
+    font-size: 20px;
+    line-height: 1.6;
+  }
+
+  /* One header row, so the room reaches the first screen. */
+  .site-header {
+    padding-top: 10px;
+    padding-bottom: 6px;
+    gap: 12px;
+  }
+
+  .site-nav a {
+    padding: 0 10px;
+  }
+
+  /* Three short lines at most, so the room still reaches the first screen. */
+  h1 {
+    font-size: clamp(32px, 9vw, 40px);
+    line-height: 1.08;
+  }
+
+  h2 {
+    font-size: 28px;
+    line-height: 1.15;
+  }
+
+  h3,
+  h4 {
+    font-size: 22px;
+  }
+
+  .panel-title {
+    font-size: 24px;
+  }
+
+  .sub-title {
+    margin-top: 36px;
+  }
+
+  .hero {
+    gap: 24px;
+    padding-top: 12px;
+  }
+
+  .lede,
+  .story-text p,
+  .intro,
+  .gets li,
+  .step p,
+  .today,
+  .prompt {
+    font-size: 20px;
+    line-height: 1.6;
+  }
+
+  .lede {
+    margin-top: 14px;
+  }
+
+  .actions {
+    margin-top: 20px;
+  }
+
+  .btn-main {
+    width: 100%;
+  }
+
+  .site-nav a,
+  .btn,
+  .btn-main,
+  .play-link,
+  .install-note,
+  .copy-status,
+  .hero-visual figcaption,
+  .film figcaption,
+  .panel-label,
+  .step-num,
+  .reqs li,
+  .paths,
+  .manual summary,
+  .command-box,
+  .repo-name,
+  .repo-note,
+  .pill,
+  .footer-meta,
+  .skip-link {
+    font-size: 18px;
+  }
+
+  .step {
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .step-num {
+    width: 36px;
+    height: 36px;
+  }
+
+  .panel {
+    padding: 20px 16px;
+  }
+
+  .command-row {
+    flex-direction: column;
+  }
+
+  .command-box {
+    padding: 12px;
+  }
+
+  .command-row .btn {
+    min-height: 48px;
+  }
+
+  .footer-line {
+    font-size: 28px;
+  }
+
+  .footer-actions,
+  .footer-actions .btn {
+    width: 100%;
+  }
+}
+
+/* Same film, portrait cut, on narrow screens. Matches the <source media> query. */
+@media (max-width: 600px) {
+  .film video {
+    aspect-ratio: 9 / 16;
+    width: min(100%, calc(78vh * 9 / 16));
+    width: min(100%, calc(78svh * 9 / 16));
+    margin: 0 auto;
+  }
+
+  .film figcaption {
+    text-align: center;
+  }
+}

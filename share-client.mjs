@@ -1,0 +1,3 @@
+export async function loadSharedRoom(id,{fetcher=fetch,sleep=ms=>new Promise(r=>setTimeout(r,ms))}={}){if(!/^[\w-]{16}$/.test(id))throw Error('Invalid share');const delays=[1000,2000,4000];for(let attempt=0;;attempt++){let response;try{response=await fetcher('/api/share/'+id,{signal:AbortSignal.timeout(8000)});}catch{if(attempt>=delays.length)throw Error('Share unavailable');await sleep(delays[attempt]);continue;}if(response.ok){const data=await response.json();if(typeof data.layout!=='string')throw Error('Invalid share');return data;}if(![404,503].includes(response.status)||attempt>=delays.length)throw Error('Share unavailable');await sleep(delays[attempt]);}}
+
+export async function loadSharedLayout(id,options){return (await loadSharedRoom(id,options)).layout;}
