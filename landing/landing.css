@@ -863,3 +863,109 @@ main {
     text-align: center;
   }
 }
+
+/* ---------- Follow on X and the lessons ---------- */
+
+.site-nav ul {
+  align-items: center;
+}
+
+.site-nav .nav-follow {
+  min-height: 44px;
+  margin-left: 8px;
+  padding: 0 16px;
+  color: #FFFFFF;
+}
+
+.site-nav .nav-follow:hover {
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+}
+
+.lessons .intro {
+  max-width: 36em;
+}
+
+.lesson-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  margin: 32px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lesson {
+  padding: 24px;
+  border: 1px solid var(--edge);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.lesson p {
+  margin-top: 10px;
+  color: var(--muted);
+}
+
+.follow-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 32px;
+  margin-top: 32px;
+}
+
+.follow-line {
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.follow-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .lesson-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Phone: one header row keeps only the follow button. */
+@media (max-width: 640px) {
+  .site-nav .nav-section {
+    display: none;
+  }
+
+  .site-nav .nav-follow {
+    margin-left: 0;
+  }
+
+  .lesson {
+    padding: 20px 16px;
+  }
+
+  .lesson p {
+    font-size: 20px;
+    line-height: 1.6;
+  }
+
+  .follow-line {
+    font-size: 24px;
+  }
+
+  .follow-actions,
+  .follow-actions .btn {
+    width: 100%;
+  }
+}

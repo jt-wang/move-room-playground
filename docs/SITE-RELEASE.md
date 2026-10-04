@@ -76,6 +76,7 @@ PORT=64358 MOVE_PREVIEW_HOSTS=<interface-ip> npm run serve:site
 | `/?s=…`, `/?room=…` (old share and room links) | 302 to `/play/` with the same query |
 | `/play` | 301 to `/play/` |
 | `/playground`, `/playground/` | 302 to `/play/` |
+| `/x` | 302 to the X follow dialog for @thejingtao; the landing's follow buttons use it |
 | `/play/…`, `/assets/…`, `/source/…`, `/setup.md`, `/playground/palette.*` | Static files |
 | `/api/…` | `worker.mjs`, unchanged (Origin checks, limits, telemetry off unless enabled) |
 | `/play/api/share[/<id>]` | The same `worker.mjs` share handler |

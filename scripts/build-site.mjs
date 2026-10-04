@@ -197,7 +197,9 @@ function checkText(out){
   const text=data.toString('utf8');
   if(name.endsWith('.html')&&/data-palette-(?:toolbar|choice)|palette\.js|class="mp-review/.test(text))fail(name+' contains review-only palette controls');
   for(const needle of forbidden)if(text.includes(needle))fail(`${name} contains forbidden text ${JSON.stringify(needle)}`);
-  if(Object.hasOwn(LANDING,name)&&text.includes('move.jingtao.io'))fail(name+' must link the playground root-relatively, not to move.jingtao.io');
+  // Share cards and the X share intent need the absolute production URL; every other landing link stays root-relative.
+  const linkText=name.endsWith('.html')?text.replace(/<meta [^>]*>/g,'').replace(/href="https:\/\/x\.com\/intent\/post\?[^"]*"/g,''):text;
+  if(Object.hasOwn(LANDING,name)&&linkText.includes('move.jingtao.io'))fail(name+' must link the playground root-relatively, not to move.jingtao.io');
  }
 }
 

@@ -1,8 +1,8 @@
 # Move
 
-**Turn room videos into explorable 3D models with your coding agent.**
+**I had no 3D background. AI coding agents built [18 rooms](https://move.jingtao.io/play/) in Blender from my videos and floor plans. The first attempts failed; a review loop made them usable. This repository packages that loop as a skill for Claude Code and Codex.**
 
-[Download the skill ZIP](https://github.com/jt-wang/move-room-playground/releases/latest/download/blender-room-tour.zip) · [Agent setup guide](https://move.jingtao.io/setup.md)
+[Try the rooms](https://move.jingtao.io/play/) · [Download the skill ZIP](https://github.com/jt-wang/move-room-playground/releases/latest/download/blender-room-tour.zip) · [Agent setup guide](https://move.jingtao.io/setup.md) · [Follow @thejingtao](https://x.com/thejingtao)
 
 ## Install the skill
 
@@ -18,11 +18,9 @@ Then ask your agent:
 
 Your agent reviews the footage, builds in Blender, and checks the model against the video. The geometry is estimated from the footage, not a measured scan.
 
-## See what I built
+## What the loop is
 
-I had no 3D modeling background. I built Move so I could revisit and compare the apartments I’d filmed. This skill is the reusable workflow behind it.
-
-**[Try Move →](https://move.jingtao.io)**
+The agent pulls reference frames, writes down what it sees, turns those notes into a Blender recipe, builds, renders, and compares the renders with your video. You read its notes, point at what drifted, and it fixes the recipe. Expect a few rounds. The method carries over to other work you don't know yet: [what it taught me](https://move.jingtao.io/#lessons).
 
 ![Move’s included practice room](docs/preview.png)
 
@@ -38,4 +36,4 @@ This repository holds code and one invented practice room. The story film and he
 
 [Development](docs/DEVELOPING.md) · [Site and release](docs/SITE-RELEASE.md) · [Assets](docs/ASSETS.md) · [MIT](LICENSE)
 
-By [Jingtao Wang](https://jingtao.io).
+By [Jingtao Wang](https://jingtao.io) · [Follow @thejingtao on X](https://x.com/thejingtao) for the next build.

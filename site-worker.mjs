@@ -5,6 +5,8 @@ import worker from './worker.mjs';
 const STATIC=/^\/(?:|landing\.(?:css|js)|setup\.md|assets\/[\w-][\w.-]*|playground\/palette\.css|play\/(?:[\w-]+\/)*(?:[\w-][\w.-]*)?|source\/[\w-][\w.-]*)$/;
 const PLAY_SHARE=/^\/play\/api\/share(?:\/[\w-]{16})?$/;
 const LANDING_MEDIA=new Set(['default-room.png','story.mp4','story-portrait.mp4','story-poster.jpg','story-poster-portrait.jpg']);
+// /x is the landing's follow link: a countable request that goes on to the X follow dialog.
+const FOLLOW_X='https://x.com/intent/follow?screen_name=thejingtao';
 const LEGACY_ASSET=/^\/assets\/(?:[\w-]+\/)*[\w-][\w.-]*$/;
 const plain=(text,status,extra={})=>new Response(text,{status,headers:{'Content-Type':'text/plain','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...extra}});
 const redirect=(location,status=302)=>new Response(null,{status,headers:{Location:location,'Cache-Control':'no-store'}});
@@ -64,6 +66,7 @@ export default {async fetch(request,env){
  if(path==='/'&&(url.searchParams.has('s')||url.searchParams.has('room')))return redirect('/play/'+query);
  if(path==='/play')return redirect('/play/'+query,301);
  if(path==='/playground'||path==='/playground/')return redirect('/play/'+query);
+ if(path==='/x')return redirect(FOLLOW_X);
  if(path==='/index.html')return redirect('/'+query,301);
  if(path==='/play/index.html')return redirect('/play/'+query,301);
  // Cached old playground pages and existing asset URLs keep working after the root becomes the landing.
