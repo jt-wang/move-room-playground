@@ -78,7 +78,7 @@ PORT=64358 MOVE_PREVIEW_HOSTS=<interface-ip> npm run serve:site
 | `/play` | 301 to `/play/` |
 | `/playground`, `/playground/` | 302 to `/play/` |
 | `/zh-hans`, `/ja/index.html` and the like | 301 to the language path with a trailing slash |
-| `/x` | 302 to the X follow dialog for @thejingtao; the landing's follow buttons use it |
+| `/x?from=<button>` | 302 to the X follow dialog for @thejingtao. With `TELEMETRY_ENABLED=true` and a `METRICS` Analytics Engine binding it first records `follow_click` (button, page language, phone or desktop, coarse location); nothing for DNT or GPC. Without those bindings it only redirects |
 | `/play/…`, `/assets/…`, `/source/…`, `/setup.md`, `/playground/palette.*` | Static files |
 | `/api/…` | `worker.mjs`, unchanged (Origin checks, limits, telemetry off unless enabled) |
 | `/play/api/share[/<id>]` | The same `worker.mjs` share handler |
