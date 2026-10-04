@@ -48,7 +48,7 @@ test('the share button and card speak the page’s language',()=>{
 
 test('the footer is only the X link',()=>{
  const footer=/<footer[\s\S]*<\/footer>/.exec(pages.en)[0];
- assert.deepEqual([...footer.matchAll(/<a [^>]*href="([^"]+)"/g)].map(m=>m[1]),['/x']);
+ assert.deepEqual([...footer.matchAll(/<a [^>]*href="([^"]+)"/g)].map(m=>m[1]),['/x?from=footer']);
  assert.doesNotMatch(footer,/MIT|Explore the playground|By /);
 });
 

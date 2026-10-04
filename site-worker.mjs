@@ -1,14 +1,26 @@
 // Integrated site routing: learner landing at /, bundled playground at /play/, share API from worker.mjs unchanged.
 // Needs the same ASSETS and SHARES bindings as worker.mjs. It is an adapter for an existing host, not a deployment.
 import worker from './worker.mjs';
+import {record,geoOf} from './metrics.mjs';
 // Every static path the site serves. Anything else is a 404, never the index page.
 const STATIC=/^\/(?:|(?:zh-hans|zh-hant|ja|ko|es)\/|landing\.(?:css|js)|setup\.md|assets\/[\w-][\w.-]*|playground\/palette\.css|play\/(?:[\w-]+\/)*(?:[\w-][\w.-]*)?|source\/[\w-][\w.-]*)$/;
 // The landing in its other five languages; English is the root.
 const LANGUAGE_PATH=/^\/(zh-hans|zh-hant|ja|ko|es)(\/index\.html)?$/;
 const PLAY_SHARE=/^\/play\/api\/share(?:\/[\w-]{16})?$/;
 const LANDING_MEDIA=new Set(['default-room.png','story.mp4','story-portrait.mp4','story-poster.jpg','story-poster-portrait.jpg']);
-// /x is the landing's follow link: a countable request that goes on to the X follow dialog.
+// /x is the landing's follow link. It records follow_click into the existing metrics dataset
+// (button, page language, phone or desktop, coarse location; nothing for DNT or GPC), then opens the X follow dialog.
 const FOLLOW_X='https://x.com/intent/follow?screen_name=thejingtao';
+const FOLLOW_BUTTONS=['header','hero','lessons','footer'];
+const PAGE_LOCALES={'/':'en','/zh-hans/':'zh-Hans','/zh-hant/':'zh-Hant','/ja/':'ja','/ko/':'ko','/es/':'es'};
+function recordFollow(request,env,url){
+ if(request.headers.get('dnt')==='1'||request.headers.get('sec-gpc')==='1')return;
+ let locale='none';
+ try{const from=new URL(request.headers.get('referer')||'');if(from.origin===url.origin)locale=PAGE_LOCALES[from.pathname]||'none';}catch{/* No usable referrer. */}
+ const button=FOLLOW_BUTTONS.includes(url.searchParams.get('from'))?url.searchParams.get('from'):'none';
+ const device=/Mobi|Android|iPhone|iPad/i.test(request.headers.get('user-agent')||'')?'mobile':'desktop';
+ record(env,'follow_click',{locale,device,source:'client',...geoOf(request),reason:button});
+}
 const LEGACY_ASSET=/^\/assets\/(?:[\w-]+\/)*[\w-][\w.-]*$/;
 const plain=(text,status,extra={})=>new Response(text,{status,headers:{'Content-Type':'text/plain','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...extra}});
 const redirect=(location,status=302)=>new Response(null,{status,headers:{Location:location,'Cache-Control':'no-store'}});
@@ -68,7 +80,7 @@ export default {async fetch(request,env){
  if(path==='/'&&(url.searchParams.has('s')||url.searchParams.has('room')))return redirect('/play/'+query);
  if(path==='/play')return redirect('/play/'+query,301);
  if(path==='/playground'||path==='/playground/')return redirect('/play/'+query);
- if(path==='/x')return redirect(FOLLOW_X);
+ if(path==='/x'){recordFollow(request,env,url);return redirect(FOLLOW_X);}
  const language=LANGUAGE_PATH.exec(path);
  if(language)return redirect(`/${language[1]}/`+query,301);
  if(path==='/index.html')return redirect('/'+query,301);
