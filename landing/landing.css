@@ -1,4 +1,4 @@
-/* Move landing preview. Palette colors and the review toolbar come from playground/palette.css.
+/* Move landing. Fixed production colors come from playground/palette.css.
    One typeface family: hierarchy comes from size, weight and spacing. */
 
 :root {
@@ -127,17 +127,6 @@ code {
 /* No-JS: hide controls that need scripting. The command stays visible and selectable. */
 .no-js .js-only {
   display: none;
-}
-
-/* ---------- Review toolbar (shared from playground/palette.css) ---------- */
-
-.mp-review {
-  font-family: var(--sans);
-}
-
-.mp-review-inner {
-  max-width: calc(var(--page) + 2 * var(--gutter));
-  padding-inline: var(--gutter);
 }
 
 /* ---------- Header ---------- */

@@ -2,7 +2,7 @@ if (location.pathname === '/' && location.hash.startsWith('#layout=')) {
   location.replace('/play/' + location.search + location.hash);
 }
 
-/* Move landing preview: copy-to-clipboard, setup guide URL and film source. Palettes live in playground/palette.js. */
+/* Move landing: copy-to-clipboard, setup guide URL and film source. */
 (function () {
   'use strict';
 

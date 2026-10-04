@@ -2,7 +2,7 @@
 // Needs the same ASSETS and SHARES bindings as worker.mjs. It is an adapter for an existing host, not a deployment.
 import worker from './worker.mjs';
 // Every static path the site serves. Anything else is a 404, never the index page.
-const STATIC=/^\/(?:|landing\.(?:css|js)|setup\.md|assets\/[\w-][\w.-]*|playground\/palette\.(?:css|js)|play\/(?:[\w-]+\/)*(?:[\w-][\w.-]*)?|source\/[\w-][\w.-]*)$/;
+const STATIC=/^\/(?:|landing\.(?:css|js)|setup\.md|assets\/[\w-][\w.-]*|playground\/palette\.css|play\/(?:[\w-]+\/)*(?:[\w-][\w.-]*)?|source\/[\w-][\w.-]*)$/;
 const PLAY_SHARE=/^\/play\/api\/share(?:\/[\w-]{16})?$/;
 const LANDING_MEDIA=new Set(['default-room.png','story.mp4','story-portrait.mp4','story-poster.jpg','story-poster-portrait.jpg']);
 const LEGACY_ASSET=/^\/assets\/(?:[\w-]+\/)*[\w-][\w.-]*$/;

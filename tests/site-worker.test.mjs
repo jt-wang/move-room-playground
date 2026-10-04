@@ -31,7 +31,7 @@ test('existing playground binding preserves API body, origin and shared-room que
  assert.equal((await call(env,'/play/',{method:'POST'})).status,405);
 });
 test('landing, playground, palette, media and source files go to static assets',async()=>{
- const {env,seen}=makeEnv(),paths=['/','/?palette=b','/play/','/play/?s=abcdefghijklmnop','/play/app.mjs','/play/assets/room.glb','/playground/palette.css','/playground/palette.js','/landing.js','/setup.md','/assets/story.mp4','/source/blender-room-tour.zip','/source/version.json'];
+ const {env,seen}=makeEnv(),paths=['/','/?palette=b','/play/','/play/?s=abcdefghijklmnop','/play/app.mjs','/play/assets/room.glb','/playground/palette.css','/landing.js','/setup.md','/assets/story.mp4','/source/blender-room-tour.zip','/source/version.json'];
  for(const p of paths)assert.equal((await call(env,p)).status,200,p);
  assert.equal(seen.length,paths.length);
 });
@@ -44,7 +44,7 @@ test('old root shares, /play and /playground redirect to /play/ keeping the quer
 });
 test('unknown paths are 404 and never fall back to the landing',async()=>{
  const {env,seen}=makeEnv();
- for(const p of ['/secret.txt','/.move-site-build','/site-receipt.json','/source/','/assets/','/playground/other.js','/play/.hidden','/worker.mjs','/api'])assert.equal((await call(env,p)).status,404,p);
+ for(const p of ['/secret.txt','/.move-site-build','/site-receipt.json','/source/','/assets/','/playground/other.js','/playground/palette.js','/play/.hidden','/worker.mjs','/api'])assert.equal((await call(env,p)).status,404,p);
  assert.equal(seen.length,0);
  assert.equal((await call(env,'/',{method:'POST'})).status,405);
 });

@@ -15,9 +15,9 @@ The public repository and skill Release are available on GitHub. Website deploym
 | --- | --- |
 | `/` (`index.html`, `landing.css`, `landing.js`) | `landing/` |
 | `/setup.md` | `landing/setup.md`, the guide agents follow |
-| `/playground/palette.css`, `/playground/palette.js` | `landing/palette.*` |
+| `/playground/palette.css` | Fixed default color tokens from `landing/palette.css` |
 | `/assets/default-room.png`, `story.mp4`, `story-portrait.mp4`, `story-poster.jpg`, `story-poster-portrait.jpg` | `MOVE_MEDIA_DIR`, checked against the external `MOVE_MEDIA_MANIFEST` |
-| `/play/…` | `release-public/` byte-for-byte, except that `play/index.html` gains the palette stylesheet, script and review bar |
+| `/play/…` | `release-public/` byte-for-byte |
 | `/source/blender-room-tour.zip` | `MOVE_SKILL_ZIP` |
 | `/source/move-room-playground.zip` | `MOVE_SOURCE_ZIP` |
 | `/source/skill-reference.md`, `README.md`, `LICENSE` | `skills/blender-room-tour/reference.md`, root `README.md`, root `LICENSE` |
@@ -93,4 +93,4 @@ The old `/#layout=…` links are forwarded to `/play/` by `landing.js`. With the
 4. Deploy on the existing host. Route requests through `site-worker.mjs`, with `ASSETS` serving `site-dist/`. For the existing live homes, bind `PLAYGROUND` to the existing playground service: the adapter strips `/play` from playground requests and forwards both share API paths unchanged in origin, query and body. Keep that service's existing assets, share KV and limiters intact. This avoids moving its prepared homes or breaking old room/share IDs. Without `PLAYGROUND`, the adapter serves the clean v2.1 invented practice room and uses the existing `SHARES` API binding; that is the default local/source-demo mode. Do not replace the live multi-home service with the synthetic demo. No private production data belongs in this repository.
 5. Smoke-test production: `/`, `/play/`, an old `/?s=<existing id>` link (it must open the same layout under `/play/`), `/?room=…`, a new share created and reopened, `/setup.md`, film range requests, and unknown paths returning 404.
 6. From a clean directory, after publication, run `npx skills add jt-wang/move-room-playground --skill blender-room-tour` for each agent and check that `SKILL.md` lands in the project folder, then run `doctor`.
-7. Keep the selectable landing palettes until a final palette is chosen. The existing playground is served unchanged through its service binding.
+7. Production uses the fixed default palette. Review controls and URL/storage palette overrides are excluded from the public build. The existing playground is served unchanged through its service binding.

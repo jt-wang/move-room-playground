@@ -1,5 +1,5 @@
 // Assemble site-dist/: the learner landing at /, the bundled playground at /play/ (from the verified release-public/),
-// palette assets, the setup guide, approved media and the packaged skill and source ZIPs. Every input is checked by hash;
+// fixed color tokens, the setup guide, approved media and the packaged skill and source ZIPs. Every input is checked by hash;
 // the output is an exact file list, and its receipt site-receipt.json sits outside the served folder.
 // Usage: npm run build && MOVE_MEDIA_DIR=… MOVE_MEDIA_MANIFEST=… MOVE_SKILL_ZIP=… MOVE_SKILL_SHA256=… MOVE_SOURCE_ZIP=… MOVE_SOURCE_SHA256=… npm run build:site
 import {createHash} from 'node:crypto';
@@ -11,7 +11,7 @@ import {fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const outName='site-dist',outDir=path.join(root,outName),marker='.move-site-build',receiptName='site-receipt.json';
 const MEDIA=['default-room.png','story.mp4','story-portrait.mp4','story-poster.jpg','story-poster-portrait.jpg'];
-const LANDING={'index.html':'landing/index.html','landing.css':'landing/landing.css','landing.js':'landing/landing.js','setup.md':'landing/setup.md','playground/palette.css':'landing/palette.css','playground/palette.js':'landing/palette.js'};
+const LANDING={'index.html':'landing/index.html','landing.css':'landing/landing.css','landing.js':'landing/landing.js','setup.md':'landing/setup.md','playground/palette.css':'landing/palette.css'};
 const DOCS={'source/skill-reference.md':'skills/blender-room-tour/reference.md','source/README.md':'README.md','source/LICENSE':'LICENSE'};
 const SKILL_DIR='skills/blender-room-tour';
 // The source ZIP must carry these byte-identical to this checkout, so a stale bundle cannot slip through.
@@ -21,10 +21,6 @@ const SOURCE_MEDIA_OK=['assets/room.glb','assets/clay-normal.png','assets/previe
 const MEDIA_EXT=/\.(png|jpe?g|webp|gif|heic|heif|avif|tiff?|glb|gltf|blend1?|fbx|obj|ply|splat|usdz?|exr|hdr|mp4|mov|m4v|mkv|webm|avi)$/i;
 const NEVER_SEGMENT=new Set(['node_modules','.git','.shares','jobs','private','output','public','release-public','site-dist','__MACOSX','__pycache__']);
 const NEVER_NAME=/^(?:\.env(?:\..*)?|\.dev\.vars|\.DS_Store|wrangler\.(?:toml|jsonc?)|.*\.(?:pem|key|jsonl|pyc))$/;
-// Added to the bundled playground only: the shared palette assets and the review toolbar.
-const PALETTE_HEAD='<link rel="stylesheet" href="/playground/palette.css"><script src="/playground/palette.js"></script>';
-const PALETTE_BAR='<div class="mp-review" lang="en" role="region" aria-label="Palette review"><div class="mp-review-inner"><a class="mp-back" href="/" data-palette-link>← Move</a><div class="mp-palette" data-palette-toolbar></div><p class="mp-notice">Local preview · <span class="mp-notice-full">The palette applies to this review bar; the playground is unchanged.</span><span class="mp-notice-short">Palette review.</span></p></div></div>';
-
 class BuildError extends Error{}
 const fail=message=>{throw new BuildError(message);};
 const sha=data=>createHash('sha256').update(data).digest('hex');
@@ -82,11 +78,6 @@ function verifyRelease(){
  const files={};
  for(const name of expected){const data=readRegular(path.join(dir,name),'release-public/'+name);if(sha(data)!==receipt.files[name])fail('hash mismatch: release-public/'+name);files[name]=data;}
  return {files,receiptSha256:sha(raw),esbuild:receipt.esbuild};
-}
-
-function injectPalette(html){
- for(const needle of ['</head>','<body>','<script type="module" src="app.mjs"></script>'])if(html.split(needle).length!==2)fail(`release-public/index.html must contain ${needle} exactly once`);
- return html.replace('</head>',()=>PALETTE_HEAD+'</head>').replace('<body>',()=>'<body>\n'+PALETTE_BAR);
 }
 
 // Approved media arrive only at build time and are copied byte-for-byte.
@@ -204,6 +195,7 @@ function checkText(out){
  for(const [name,data] of out){
   if(!/\.(?:html|css|js|mjs|md|json|txt)$/.test(name)||name==='play/assets/playcanvas.min.js')continue;
   const text=data.toString('utf8');
+  if(name.endsWith('.html')&&/data-palette-(?:toolbar|choice)|palette\.js|class="mp-review/.test(text))fail(name+' contains review-only palette controls');
   for(const needle of forbidden)if(text.includes(needle))fail(`${name} contains forbidden text ${JSON.stringify(needle)}`);
   if(Object.hasOwn(LANDING,name)&&text.includes('move.jingtao.io'))fail(name+' must link the playground root-relatively, not to move.jingtao.io');
  }
@@ -224,7 +216,7 @@ function main(){
  const out=new Map();
  for(const [name,rel] of Object.entries(LANDING))out.set(name,readProject(rel));
  for(const name of MEDIA)out.set('assets/'+name,media.files[name]);
- for(const [name,data] of Object.entries(release.files))out.set('play/'+name,name==='index.html'?Buffer.from(injectPalette(data.toString('utf8'))):data);
+ for(const [name,data] of Object.entries(release.files))out.set('play/'+name,data);
  out.set('source/blender-room-tour.zip',skillZip);
  out.set('source/move-room-playground.zip',sourceZip);
  for(const [name,rel] of Object.entries(DOCS))out.set(name,readProject(rel));
