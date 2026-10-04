@@ -1,7 +1,8 @@
 /* The landing exists at one path per language. The root follows the language this visitor chose before
-   (the playground saves the same key) or the browser's language; a language path someone linked to stays put. */
+   in either playground or the browser's language; a language path someone linked to stays put. */
 var LANDING_PATHS = { 'zh-Hans': '/zh-hans/', 'zh-Hant': '/zh-hant/', ja: '/ja/', ko: '/ko/', en: '/', es: '/es/' };
-var LANGUAGE_KEY = 'move-demo:language';
+// The live playground saves the language as room-toy-language; the source playground as move-demo:language.
+var LANGUAGE_KEYS = ['room-toy-language', 'move-demo:language'];
 
 // Same mapping as normalizeLocale in i18n.mjs.
 function landingLocale(value) {
@@ -16,7 +17,9 @@ if (location.pathname === '/' && location.hash.indexOf('#layout=') === 0) {
   location.replace('/play/' + location.search + location.hash);
 } else if (location.pathname === '/') {
   var savedLanguage = null;
-  try { savedLanguage = localStorage.getItem(LANGUAGE_KEY); } catch (e) { savedLanguage = null; }
+  try {
+    for (var k = 0; k < LANGUAGE_KEYS.length && !savedLanguage; k++) savedLanguage = localStorage.getItem(LANGUAGE_KEYS[k]);
+  } catch (e) { savedLanguage = null; }
   var browserLanguage = (navigator.languages && navigator.languages[0]) || navigator.language;
   var landingLanguage = landingLocale(savedLanguage || browserLanguage);
   if (landingLanguage !== 'en') location.replace(LANDING_PATHS[landingLanguage] + location.search + location.hash);
@@ -151,14 +154,16 @@ if (location.pathname === '/' && location.hash.indexOf('#layout=') === 0) {
     }
   }
 
-  // Choosing a language saves it for the landing and the playground, then opens that language's page.
+  // Choosing a language saves it for the landing and both playgrounds, then opens that language's page.
   function prepareLanguageMenu() {
     var select = document.querySelector('[data-lang-select]');
     if (!select) return;
     select.addEventListener('change', function () {
       var path = LANDING_PATHS[select.value];
       if (!path) return;
-      try { localStorage.setItem(LANGUAGE_KEY, select.value); } catch (e) { /* The page still changes language. */ }
+      try {
+        for (var i = 0; i < LANGUAGE_KEYS.length; i++) localStorage.setItem(LANGUAGE_KEYS[i], select.value);
+      } catch (e) { /* The page still changes language. */ }
       location.href = path + location.hash;
     });
   }

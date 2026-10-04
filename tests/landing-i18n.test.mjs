@@ -56,26 +56,35 @@ test('assets load from any language path',()=>{
  for(const m of pages.en.matchAll(/ (?:src|poster)="([^"]+)"|<link rel="stylesheet" href="([^"]+)"/g))assert.ok((m[1]||m[2]).startsWith('/'),m[0]);
 });
 
-// Runs the real landing.js in a sandbox and reports where it sends the visitor, if anywhere.
-function visit(pathname,stored,languages,hash=''){
- let to=null;const store=new Map(stored?[['move-demo:language',stored]]:[]);
- const ctx={location:{pathname,search:'',hash,replace(u){to=u;}},navigator:{languages,language:languages[0]},
+// Runs the real landing.js in a sandbox: where it sends the visitor, and what choosing a language in the menu saves.
+function visit(pathname,saved,languages,hash=''){
+ let to=null,ready=null,onChange=null;const store=new Map(Object.entries(saved||{}));
+ const select={value:'',addEventListener:(t,f)=>{onChange=f;}};
+ const location={pathname,search:'',hash,replace(u){to=u;},set href(u){to=u;}};
+ const ctx={location,navigator:{languages,language:languages[0]},
   localStorage:{getItem:k=>store.get(k)??null,setItem:(k,v)=>store.set(k,v)},
-  document:{readyState:'loading',documentElement:{classList:{add(){},remove(){}}},addEventListener(){}},window:{}};
+  document:{readyState:'loading',documentElement:{classList:{add(){},remove(){}}},addEventListener:(t,f)=>{ready=f;},querySelector:q=>q==='[data-lang-select]'?select:null,querySelectorAll:()=>[]},window:{}};
  vm.runInNewContext(fs.readFileSync(new URL('../landing/landing.js',import.meta.url),'utf8'),ctx);
- return to;
+ return {to,store,choose(code){ready();select.value=code;onChange();return to;}};
 }
+const LIVE='room-toy-language',DEMO='move-demo:language';
 test('first visit to / goes to the browser’s language unless the visitor already chose one',()=>{
- assert.equal(visit('/',null,['ja-JP','en']),'/ja/');
- assert.equal(visit('/',null,['zh-TW']),'/zh-hant/');
- assert.equal(visit('/',null,['zh-CN']),'/zh-hans/');
- assert.equal(visit('/',null,['fr-FR','de']),null);
- assert.equal(visit('/',null,['en-US']),null);
- assert.equal(visit('/','en',['ko-KR']),null);
- assert.equal(visit('/','es',['ja']),'/es/');
- assert.equal(visit('/',null,['ja'],'#lessons'),'/ja/#lessons');
- assert.equal(visit('/ja/',null,['es']),null,'a language page someone linked to stays put');
- assert.equal(visit('/',null,['ja'],'#layout=abc'),'/play/#layout=abc','old playground links still win');
+ assert.equal(visit('/',null,['ja-JP','en']).to,'/ja/');
+ assert.equal(visit('/',null,['zh-TW']).to,'/zh-hant/');
+ assert.equal(visit('/',null,['zh-CN']).to,'/zh-hans/');
+ assert.equal(visit('/',null,['fr-FR','de']).to,null);
+ assert.equal(visit('/',null,['en-US']).to,null);
+ assert.equal(visit('/',{[LIVE]:'en'},['ko-KR']).to,null);
+ assert.equal(visit('/',{[LIVE]:'es'},['ja']).to,'/es/','choice made in the live playground');
+ assert.equal(visit('/',{[DEMO]:'ko'},['ja']).to,'/ko/','choice made in the source playground');
+ assert.equal(visit('/',null,['ja'],'#lessons').to,'/ja/#lessons');
+ assert.equal(visit('/ja/',null,['es']).to,null,'a language page someone linked to stays put');
+ assert.equal(visit('/',null,['ja'],'#layout=abc').to,'/play/#layout=abc','old playground links still win');
+});
+test('choosing a language saves it where both playgrounds read it and opens that page',()=>{
+ const v=visit('/ja/',null,['ja']);
+ assert.equal(v.choose('ko'),'/ko/');
+ assert.equal(v.store.get(LIVE),'ko');assert.equal(v.store.get(DEMO),'ko');
 });
 
 test('language paths are served, and bare or index paths redirect to them',async()=>{
