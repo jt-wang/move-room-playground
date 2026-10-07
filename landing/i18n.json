@@ -62,8 +62,8 @@
   "copy2": "复制",
   "copied": "已复制",
   "copyFallback": "请选中命令后手动复制",
-  "agentLabel": "或者让 agent 帮你装",
-  "agentNote": "把这句话粘贴到 Claude Code 或 Codex，它会按<a href=\"/setup.md\">安装指南</a>在这个项目里装好。",
+  "agentLabel": "把这句话粘贴到 Claude Code 或 Codex",
+  "agentNote": "它会按<a href=\"/setup.md\">安装指南</a>在这个项目里装好 skill；缺 Blender、FFmpeg 或 Python 的话，问过你之后一起装上。",
   "agentCommand": "阅读 <span data-setup-url>/setup.md</span>，为这个项目安装 blender-room-tour。",
   "askLabel": "然后对 agent 说",
   "askPrompt": "用 blender-room-tour 把这段房间视频做成一个我能逛的、可编辑的 3D 房间。",
@@ -80,7 +80,8 @@
   "sourceLabel": "源代码",
   "repoNote": "playground、虚构的练习房间和 skill，都在同一个仓库里。",
   "viewGithub": "在 GitHub 上查看",
-  "footerFollow": "在 X 上关注 @thejingtao"
+  "footerFollow": "在 X 上关注 @thejingtao",
+  "heroTryLabel": "自己也做一个：把这句话粘贴到 Claude Code 或 Codex。"
  },
  "zh-Hant": {
   "title": "Move — AI agent 在 Blender 裡做出了這些房間",
@@ -145,8 +146,8 @@
   "copy2": "複製",
   "copied": "已複製",
   "copyFallback": "請選取指令後手動複製",
-  "agentLabel": "或者讓 agent 幫你安裝",
-  "agentNote": "把這句話貼到 Claude Code 或 Codex，它會照<a href=\"/setup.md\">安裝指南</a>在這個專案裡裝好。",
+  "agentLabel": "把這句話貼到 Claude Code 或 Codex",
+  "agentNote": "它會照<a href=\"/setup.md\">安裝指南</a>在這個專案裡裝好 skill；缺 Blender、FFmpeg 或 Python 的話，問過你之後一起裝上。",
   "agentCommand": "閱讀 <span data-setup-url>/setup.md</span>，為這個專案安裝 blender-room-tour。",
   "askLabel": "然後對 agent 說",
   "askPrompt": "用 blender-room-tour 把這段房間影片做成一個我能逛的、可編輯的 3D 房間。",
@@ -163,7 +164,8 @@
   "sourceLabel": "原始碼",
   "repoNote": "playground、虛構的練習房間和 skill，都在同一個儲存庫裡。",
   "viewGithub": "在 GitHub 上查看",
-  "footerFollow": "在 X 上追蹤 @thejingtao"
+  "footerFollow": "在 X 上追蹤 @thejingtao",
+  "heroTryLabel": "自己也做一個：把這句話貼到 Claude Code 或 Codex。"
  },
  "ja": {
   "title": "Move — AI エージェントが Blender でつくった部屋",
@@ -228,8 +230,8 @@
   "copy2": "コピー",
   "copied": "コピーしました",
   "copyFallback": "コマンドを選択してコピーしてください",
-  "agentLabel": "エージェントに設定を任せる",
-  "agentNote": "これを Claude Code か Codex に貼り付けると、<a href=\"/setup.md\">セットアップガイド</a>に沿ってこのプロジェクトに設定します。",
+  "agentLabel": "これを Claude Code か Codex に貼り付ける",
+  "agentNote": "<a href=\"/setup.md\">セットアップガイド</a>に沿って、このプロジェクトに skill を入れます。Blender、FFmpeg、Python が足りなければ、確認してから一緒にインストールします。",
   "agentCommand": "<span data-setup-url>/setup.md</span> を読んで、このプロジェクトに blender-room-tour を設定して。",
   "askLabel": "そしてエージェントに頼む",
   "askPrompt": "blender-room-tour を使って、この部屋の動画から見て回れる編集可能な 3D の部屋をつくって。",
@@ -246,7 +248,8 @@
   "sourceLabel": "ソースコード",
   "repoNote": "playground、架空の練習用の部屋、skill をひとつのリポジトリにまとめています。",
   "viewGithub": "GitHub で見る",
-  "footerFollow": "X で @thejingtao をフォロー"
+  "footerFollow": "X で @thejingtao をフォロー",
+  "heroTryLabel": "自分でもつくる：これを Claude Code か Codex に貼り付け。"
  },
  "ko": {
   "title": "Move — AI 에이전트가 Blender로 만든 방들",
@@ -311,8 +314,8 @@
   "copy2": "복사",
   "copied": "복사됨",
   "copyFallback": "명령을 선택해서 복사하세요",
-  "agentLabel": "에이전트에게 설정 맡기기",
-  "agentNote": "이 문장을 Claude Code 또는 Codex에 붙여 넣으면 <a href=\"/setup.md\">설정 가이드</a>에 따라 이 프로젝트에 설치합니다.",
+  "agentLabel": "이 문장을 Claude Code나 Codex에 붙여 넣으세요",
+  "agentNote": "<a href=\"/setup.md\">설정 가이드</a>에 따라 이 프로젝트에 skill을 설치하고, Blender, FFmpeg, Python이 없으면 먼저 물어본 뒤 함께 설치합니다.",
   "agentCommand": "<span data-setup-url>/setup.md</span>를 읽고 이 프로젝트에 blender-room-tour를 설정해 줘.",
   "askLabel": "그다음 에이전트에게 요청",
   "askPrompt": "blender-room-tour로 이 방 영상을 둘러볼 수 있는 편집 가능한 3D 방으로 만들어 줘.",
@@ -329,7 +332,8 @@
   "sourceLabel": "소스 코드",
   "repoNote": "playground, 가상의 연습용 방, skill이 하나의 저장소에 있습니다.",
   "viewGithub": "GitHub에서 보기",
-  "footerFollow": "X에서 @thejingtao 팔로우"
+  "footerFollow": "X에서 @thejingtao 팔로우",
+  "heroTryLabel": "직접 만들기: 이 문장을 Claude Code나 Codex에 붙여 넣으세요."
  },
  "es": {
   "title": "Move — Agentes de IA construyeron estas habitaciones en Blender",
@@ -394,8 +398,8 @@
   "copy2": "Copiar",
   "copied": "Copiado",
   "copyFallback": "Selecciona el comando y cópialo",
-  "agentLabel": "O deja que tu agente lo configure",
-  "agentNote": "Pega esto en Claude Code o Codex para que siga <a href=\"/setup.md\">la guía de configuración</a> en este proyecto.",
+  "agentLabel": "Pega esto en Claude Code o Codex",
+  "agentNote": "Sigue <a href=\"/setup.md\">la guía de configuración</a>: instala el skill en este proyecto y, si faltan Blender, FFmpeg o Python, también los instala después de preguntarte.",
   "agentCommand": "Lee <span data-setup-url>/setup.md</span> y configura blender-room-tour para este proyecto.",
   "askLabel": "Luego pídele a tu agente",
   "askPrompt": "Usa blender-room-tour para convertir este vídeo de la habitación en una habitación 3D editable que pueda recorrer.",
@@ -412,6 +416,7 @@
   "sourceLabel": "Código fuente",
   "repoNote": "El playground, la habitación de práctica inventada y el skill, en un solo repositorio.",
   "viewGithub": "Ver en GitHub",
-  "footerFollow": "Sigue a @thejingtao en X"
+  "footerFollow": "Sigue a @thejingtao en X",
+  "heroTryLabel": "Haz el tuyo: pega esto en Claude Code o Codex."
  }
 }

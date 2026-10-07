@@ -151,3 +151,25 @@ test('visitors are never told to install tools; the agent sets them up',()=>{
  }
  for(const strings of Object.values(dict))assert.equal(strings.today2,undefined);
 });
+
+test('the first screen pairs the one-line setup with the follow button',()=>{
+ for(const [code,html] of Object.entries(pages)){
+  const hero=html.match(/<section class="hero"[\s\S]*?<\/section>/)[0];
+  const setup=hero.match(/<code id="([\w-]+)"[^>]*>[\s\S]*?data-setup-url[\s\S]*?<\/code>/);
+  assert.ok(setup,code+': setup line in the hero');
+  assert.match(hero,new RegExp(`data-copy-target="${setup[1]}"`),code+': copy button for it');
+  assert.ok(hero.indexOf(setup[0])<hero.indexOf('data-follow="hero"'),code+': setup first, follow right after');
+  assert.doesNotMatch(hero,/npx skills add/,code);
+ }
+});
+
+test('Get started offers one path: paste a line into your agent',()=>{
+ for(const [code,html] of Object.entries(pages)){
+  const panel=html.match(/<div class="panel" id="get-started"[\s\S]*?<details class="manual">/)[0];
+  assert.equal((panel.match(/<pre class="command-box">/g)||[]).length,1,code+': one command outside Technical details');
+  assert.match(panel,/data-setup-url/,code);assert.doesNotMatch(panel,/npx skills add/,code);
+  const details=html.match(/<details class="manual">[\s\S]*?<\/details>/)[0];
+  assert.match(details,/npx skills add/,code+': the npx command stays available in Technical details');
+ }
+ for(const [code,s] of Object.entries(dict))assert.doesNotMatch(s.agentLabel,/^(Or|O)\b|或者|或是|または|또는/,code);
+});

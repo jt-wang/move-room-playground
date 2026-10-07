@@ -306,6 +306,20 @@ main {
   margin-top: 32px;
 }
 
+/* The one-line setup sits right above the follow button: the two things a visitor can do now. */
+.hero-try {
+  margin-bottom: 16px;
+}
+
+.hero-try-label {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.manual-install {
+  margin-bottom: 18px;
+}
+
 /* The room image links to the playground; the image itself is shown uncropped and untinted. */
 .vignette {
   display: block;

@@ -49,6 +49,14 @@
         <h1 id="hero-title" data-i18n="heroTitle">Get an AI agent to do expert work you’ve never done.</h1>
         <p class="lede" data-i18n="lede">I had no 3D background. AI coding agents built the 18 rooms in this playground in Blender, from my viewing videos and floor plans. The first attempts failed. A review loop made them usable, and you can run it on your own room.</p>
         <div class="actions">
+          <div class="hero-try">
+            <p class="hero-try-label" data-i18n="heroTryLabel">Make your own: paste this into Claude Code or Codex.</p>
+            <div class="command-row">
+              <pre class="command-box"><code id="hero-setup" class="command" data-i18n="agentCommand">Read <span data-setup-url>/setup.md</span> and set up blender-room-tour for this project.</code></pre>
+              <button type="button" class="btn btn-secondary js-only" data-copy-target="hero-setup" data-copy-status="hero-copy-status" data-copied="Copied" data-copy-fallback="Select and copy the command" data-i18n="copy" data-i18n-attr="data-copied:copied data-copy-fallback:copyFallback">Copy</button>
+            </div>
+            <p id="hero-copy-status" class="copy-status" role="status"></p>
+          </div>
           <a class="btn btn-primary btn-main" href="/x?from=hero" data-follow="hero" target="_blank" rel="noopener" data-i18n="followHandle">Follow @thejingtao</a>
           <a class="play-link" href="#story" data-i18n="watchStory">Watch the 70-second story <span aria-hidden="true">→</span></a>
         </div>
@@ -166,19 +174,10 @@
           </ul>
         </div>
 
-        <div class="panel-block">
-          <p class="panel-label" data-i18n="installLabel">Install the skill</p>
-          <p class="install-note" data-i18n="installNote">Run this in your project to install the skill for Claude Code or Codex.</p>
-          <div class="command-row">
-            <pre class="command-box"><code id="skill-command" class="command"><span class="tok">npx skills add</span> <span class="tok">jt-wang/</span><wbr><span class="tok">move-room-playground</span> <span class="tok">--skill</span> <span class="tok">blender-room-tour</span></code></pre>
-            <button type="button" class="btn btn-primary js-only" data-copy-target="skill-command" data-copy-status="skill-copy-status" data-copied="Copied" data-copy-fallback="Select and copy the command" data-i18n="copy" data-i18n-attr="data-copied:copied data-copy-fallback:copyFallback">Copy</button>
-          </div>
-          <p id="skill-copy-status" class="copy-status" role="status"></p>
-        </div>
 
         <div class="panel-block">
-          <p class="panel-label" data-i18n="agentLabel">Or let your agent set it up</p>
-          <p class="install-note" data-i18n="agentNote">Paste this into Claude Code or Codex to follow <a href="/setup.md">the setup guide</a> in this project.</p>
+          <p class="panel-label" data-i18n="agentLabel">Paste this into Claude Code or Codex</p>
+          <p class="install-note" data-i18n="agentNote">It follows <a href="/setup.md">the setup guide</a>: it installs the skill in this project and, after asking you, any of Blender, FFmpeg or Python that are missing.</p>
           <div class="command-row">
             <pre class="command-box"><code id="agent-setup" class="command" data-i18n="agentCommand">Read <span data-setup-url>/setup.md</span> and set up blender-room-tour for this project.</code></pre>
             <button type="button" class="btn btn-primary js-only" data-copy-target="agent-setup" data-copy-status="agent-copy-status" data-copied="Copied" data-copy-fallback="Select and copy the command" data-i18n="copy2" data-i18n-attr="data-copied:copied data-copy-fallback:copyFallback">Copy</button>
@@ -203,6 +202,15 @@
             <li>Blender</li>
             <li>FFmpeg</li>
           </ul>
+          <div class="manual-install">
+            <p class="panel-label" data-i18n="installLabel">Install the skill</p>
+            <p class="install-note" data-i18n="installNote">Run this in your project to install the skill for Claude Code or Codex.</p>
+            <div class="command-row">
+              <pre class="command-box"><code id="skill-command" class="command"><span class="tok">npx skills add</span> <span class="tok">jt-wang/</span><wbr><span class="tok">move-room-playground</span> <span class="tok">--skill</span> <span class="tok">blender-room-tour</span></code></pre>
+              <button type="button" class="btn btn-primary js-only" data-copy-target="skill-command" data-copy-status="skill-copy-status" data-copied="Copied" data-copy-fallback="Select and copy the command" data-i18n="copy" data-i18n-attr="data-copied:copied data-copy-fallback:copyFallback">Copy</button>
+            </div>
+            <p id="skill-copy-status" class="copy-status" role="status"></p>
+          </div>
           <p class="panel-label" data-i18n="manualLabel">Manual setup</p>
           <ol class="paths">
             <li data-i18n="manual1">Download the skill and extract the whole <code>blender-room-tour</code> folder, keeping its scripts and assets together.</li>
