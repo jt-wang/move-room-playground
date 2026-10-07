@@ -47,7 +47,7 @@ test('a shared link renders a large card credited to @thejingtao',()=>{
  assert.equal(meta('name','twitter:card'),'summary_large_image');
  assert.equal(meta('name','twitter:site'),'@thejingtao');
  assert.equal(meta('name','twitter:creator'),'@thejingtao');
- assert.match(meta('property','og:image'),/^https:\/\/move\.jingtao\.io\/assets\/default-room\.png$/);
+ assert.match(meta('property','og:image'),/^https:\/\/move\.jingtao\.io\/assets\/share-card\.png$/);
  assert.equal(meta('property','og:url'),'https://move.jingtao.io/');
  for(const n of ['og:title','og:description'])assert.ok(meta('property',n),n);
 });

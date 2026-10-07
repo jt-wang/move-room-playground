@@ -129,3 +129,15 @@ test('localized film files are served from the landing, not forwarded to the pla
  for(const p of all)assert.equal((await siteWorker.fetch(new Request('http://127.0.0.1'+p),env)).status,200,p);
  assert.deepEqual(forwarded,[]);assert.deepEqual(seen,all);
 });
+
+test('each language page shares its own 1200×630 card',async()=>{
+ const meta=(html,attr,k)=>html.match(new RegExp(`<meta ${attr}="${k}" content="([^"]*)"`))?.[1];
+ const forwarded=[],env={ASSETS:{fetch(){return new Response('png');}},PLAYGROUND:{fetch(req){forwarded.push(new URL(req.url).pathname);return new Response('play');}}};
+ for(const {code,path} of LANDING_LOCALES){
+  const html=pages[code],slug=code==='en'?'':'-'+path.slice(1,-1),card=`https://move.jingtao.io/assets/share-card${slug}.png`;
+  assert.equal(meta(html,'property','og:image'),card,code);assert.equal(meta(html,'name','twitter:image'),card,code);
+  assert.equal(meta(html,'property','og:image:width'),'1200',code);assert.equal(meta(html,'property','og:image:height'),'630',code);
+  assert.equal((await siteWorker.fetch(new Request('http://127.0.0.1'+new URL(card).pathname),env)).status,200,code);
+ }
+ assert.deepEqual(forwarded,[]);
+});
