@@ -30,7 +30,7 @@ test('every translatable string has a translation, and no extra keys',()=>{
 });
 
 test('translated pages keep links, controls and the follow buttons',()=>{
- const shape=html=>({follow:[...html.matchAll(/data-follow="([\w-]+)"/g)].map(m=>m[1]),hrefs:[...html.matchAll(/ href="([^"]+)"/g)].map(m=>m[1]).filter(h=>!h.startsWith('https://x.com/intent/post')&&!h.startsWith('https://move.jingtao.io')),ids:[...html.matchAll(/ id="([^"]+)"/g)].map(m=>m[1])});
+ const shape=html=>({follow:[...html.matchAll(/data-follow="([\w-]+)"/g)].map(m=>m[1]),hrefs:[...html.matchAll(/ href="([^"]+)"/g)].map(m=>m[1]).filter(h=>!h.startsWith('https://x.com/intent/post')&&!h.startsWith('https://move.jingtao.io')&&!h.startsWith('/assets/story')),ids:[...html.matchAll(/ id="([^"]+)"/g)].map(m=>m[1])});
  const en=shape(pages.en);
  assert.deepEqual(en.follow,['header','hero','lessons','footer']);
  for(const code of ['zh-Hans','zh-Hant','ja','ko','es'])assert.deepEqual(shape(pages[code]),en,code);
@@ -94,4 +94,38 @@ test('language paths are served, and bare or index paths redirect to them',async
  assert.deepEqual(seen,['/zh-hans/','/zh-hant/','/ja/','/ko/','/es/']);
  for(const [p,to] of [['/ja','/ja/'],['/ja?x=1','/ja/?x=1'],['/ja/index.html','/ja/']]){const r=await call(p);assert.equal(r.status,301,p);assert.equal(r.headers.get('location'),to);}
  for(const p of ['/fr/','/ja/other','/en/'])assert.equal((await call(p)).status,404,p);
+});
+
+test('the story film has no caption describing its own format',()=>{
+ for(const [code,html] of Object.entries(pages)){
+  const film=html.match(/<figure class="film">[\s\S]*?<\/figure>/)[0];
+  assert.doesNotMatch(film,/<figcaption/,code);
+  assert.doesNotMatch(film,/aria-describedby/,code);
+ }
+ for(const strings of Object.values(dict))assert.equal(strings.filmCaption,undefined);
+});
+
+const filmFiles=slug=>{const s=slug?'-'+slug:'';return {landscape:`/assets/story${s}.mp4`,portrait:`/assets/story-portrait${s}.mp4`,poster:`/assets/story-poster${s}.jpg`,posterPortrait:`/assets/story-poster-portrait${s}.jpg`};};
+test('each language page plays the story film made in its language',()=>{
+ for(const {code,path} of LANDING_LOCALES){
+  const f=filmFiles(code==='en'?'':path.slice(1,-1)),film=pages[code].match(/<figure class="film">[\s\S]*?<\/figure>/)[0];
+  for(const [attr,want] of [['src',f.portrait+'#t=0.001'],['src',f.landscape],['poster',f.poster],['href',f.landscape],
+   ['data-film-landscape',f.landscape],['data-film-portrait',f.portrait+'#t=0.001'],['data-poster-landscape',f.poster],['data-poster-portrait',f.posterPortrait]])
+   assert.ok(film.includes(`${attr}="${want}"`),`${code}: ${attr}="${want}"`);
+  assert.equal((film.match(/\/assets\/story/g)||[]).length,8,code+': every film reference is localized');
+ }
+});
+
+test('the film switcher reads each page’s own files instead of fixed English paths',()=>{
+ const js=fs.readFileSync(new URL('../landing/landing.js',import.meta.url),'utf8');
+ assert.doesNotMatch(js,/\/assets\/story/);
+ for(const k of ['filmLandscape','filmPortrait','posterLandscape','posterPortrait'])assert.match(js,new RegExp('dataset\\.'+k));
+});
+
+test('localized film files are served from the landing, not forwarded to the playground',async()=>{
+ const seen=[],forwarded=[];
+ const env={ASSETS:{fetch(req){seen.push(new URL(req.url).pathname);return new Response('film');}},PLAYGROUND:{fetch(req){forwarded.push(new URL(req.url).pathname);return new Response('play');}}};
+ const all=LANDING_LOCALES.flatMap(({code,path})=>Object.values(filmFiles(code==='en'?'':path.slice(1,-1))));
+ for(const p of all)assert.equal((await siteWorker.fetch(new Request('http://127.0.0.1'+p),env)).status,200,p);
+ assert.deepEqual(forwarded,[]);assert.deepEqual(seen,all);
 });

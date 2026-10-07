@@ -2,12 +2,13 @@
 // Needs the same ASSETS and SHARES bindings as worker.mjs. It is an adapter for an existing host, not a deployment.
 import worker from './worker.mjs';
 import {record,geoOf} from './metrics.mjs';
+import {LANDING_MEDIA as MEDIA_NAMES} from './landing/localize.mjs';
 // Every static path the site serves. Anything else is a 404, never the index page.
 const STATIC=/^\/(?:|(?:zh-hans|zh-hant|ja|ko|es)\/|landing\.(?:css|js)|setup\.md|assets\/[\w-][\w.-]*|playground\/palette\.css|play\/(?:[\w-]+\/)*(?:[\w-][\w.-]*)?|source\/[\w-][\w.-]*)$/;
 // The landing in its other five languages; English is the root.
 const LANGUAGE_PATH=/^\/(zh-hans|zh-hant|ja|ko|es)(\/index\.html)?$/;
 const PLAY_SHARE=/^\/play\/api\/share(?:\/[\w-]{16})?$/;
-const LANDING_MEDIA=new Set(['default-room.png','story.mp4','story-portrait.mp4','story-poster.jpg','story-poster-portrait.jpg']);
+const LANDING_MEDIA=new Set(MEDIA_NAMES);
 // /x is the landing's follow link. It records follow_click into the existing metrics dataset
 // (button, page language, phone or desktop, coarse location; nothing for DNT or GPC), then opens the X follow dialog.
 const FOLLOW_X='https://x.com/intent/follow?screen_name=thejingtao';

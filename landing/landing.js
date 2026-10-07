@@ -128,7 +128,7 @@ if (location.pathname === '/' && location.hash.indexOf('#layout=') === 0) {
         var revision = 0, switching = false, position = 0, resume = false;
         function selectFilm(initial) {
           var portrait = media.matches;
-          video.poster = portrait ? '/assets/story-poster-portrait.jpg' : '/assets/story-poster.jpg';
+          video.poster = portrait ? video.dataset.posterPortrait : video.dataset.posterLandscape;
           // The source media attribute selects the initial file before this script runs.
           if (initial) return;
           if (!switching) {
@@ -144,7 +144,7 @@ if (location.pathname === '/' && location.hash.indexOf('#layout=') === 0) {
             switching = false;
             if (resume) video.play().catch(function () {});
           }, { once: true });
-          video.src = portrait ? '/assets/story-portrait.mp4#t=0.001' : '/assets/story.mp4';
+          video.src = portrait ? video.dataset.filmPortrait : video.dataset.filmLandscape;
           video.load();
         }
         selectFilm(true);

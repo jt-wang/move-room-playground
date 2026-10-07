@@ -10,6 +10,12 @@ export const LANDING_LOCALES=[
  {code:'en',path:'/',name:'English',og:'en_US'},
  {code:'es',path:'/es/',name:'Español',og:'es_ES'}
 ];
+// The story film is made in each language. English keeps the original names; the others add the page's path name,
+// e.g. story-ja.mp4, story-portrait-ja.mp4, story-poster-ja.jpg, story-poster-portrait-ja.jpg.
+const FILM_BASES=['story.mp4','story-portrait.mp4','story-poster.jpg','story-poster-portrait.jpg'];
+export const filmSlug=code=>{const l=LANDING_LOCALES.find(l=>l.code===code);return !l||l.code==='en'?'':l.path.slice(1,-1);};
+const filmName=(base,slug)=>slug?base.replace(/\.(mp4|jpg)$/,`-${slug}.$1`):base;
+export const LANDING_MEDIA=['default-room.png',...LANDING_LOCALES.flatMap(l=>FILM_BASES.map(b=>filmName(b,filmSlug(l.code))))];
 const escapeAttr=s=>s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
 const unescapeAttr=s=>s.replace(/&quot;/g,'"').replace(/&lt;/g,'<').replace(/&amp;/g,'&');
 const ELEMENT=/<([a-z][a-z0-9]*)\b([^>]*?\sdata-i18n="([\w-]+)"[^>]*)>([\s\S]*?)<\/\1>/g;
@@ -37,6 +43,8 @@ export function localizeLanding(template,code,dict){
  html=html.replace(ATTR_HOLDER,tag=>{for(const [attr,key] of pairs(attrValue(tag,'data-i18n-attr')))tag=tag.replace(new RegExp(`(\\s${attr}=")[^"]*(")`),(_,a,b)=>a+escapeAttr(get(key))+b);return tag;});
  html=html.replace(/<a ([^>]*\sdata-share-x[^>]*)>/,tag=>tag.replace(/\shref="[^"]*"/,` href="${shareHref(attrValue(tag,'data-share-text'),pageUrl)}"`));
  html=html.replace(/\sdata-i18n(?:-attr)?="[^"]*"/g,'');
+ const slug=filmSlug(code);
+ html=html.replace(/\/assets\/(story(?:-portrait|-poster|-poster-portrait)?\.(?:mp4|jpg))/g,(_,base)=>'/assets/'+filmName(base,slug));
  html=html.replace(/<html lang="[^"]*"/,`<html lang="${code}"`);
  html=html.replace(/(<meta property="og:url" content=")[^"]*(")/,`$1${pageUrl}$2`);
  const links=[`<link rel="canonical" href="${pageUrl}">`,`<meta property="og:locale" content="${locale.og}">`,

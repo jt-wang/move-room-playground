@@ -7,11 +7,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import zlib from 'node:zlib';
 import {fileURLToPath} from 'node:url';
-import {LANDING_LOCALES,localizeLanding} from '../landing/localize.mjs';
+import {LANDING_LOCALES,LANDING_MEDIA,localizeLanding} from '../landing/localize.mjs';
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const outName='site-dist',outDir=path.join(root,outName),marker='.move-site-build',receiptName='site-receipt.json';
-const MEDIA=['default-room.png','story.mp4','story-portrait.mp4','story-poster.jpg','story-poster-portrait.jpg'];
+const MEDIA=LANDING_MEDIA;
 // The landing page itself is generated per language from landing/index.html and landing/i18n.json.
 const LANDING_PAGES=new Map(LANDING_LOCALES.map(l=>[l.path.slice(1)+'index.html',l.code]));
 const LANDING={'landing.css':'landing/landing.css','landing.js':'landing/landing.js','setup.md':'landing/setup.md','playground/palette.css':'landing/palette.css'};
