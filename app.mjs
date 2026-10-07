@@ -256,7 +256,7 @@ try{
  camera=new pc.Entity('Camera');camera.addComponent('camera',{clearColor:new pc.Color(.80,.88,.84),nearClip:.03,farClip:Math.max(80,config.maxDistance*3),fov:48});app.root.addChild(camera);
  const stage=$('.viewport');const resize=()=>{const width=stage.clientWidth,height=stage.clientHeight;app.resizeCanvas(width,height);camera.camera.horizontalFov=height>width;camera.camera.fov=height>width?65:48;if(multilevel&&ready){distance=fitDistance(frameConfig,width/height,camera.camera.horizontalFov,camera.camera.fov);cameraUpdate();}};new ResizeObserver(resize).observe(stage);resize();
  app.scene.ambientLight=new pc.Color(.96,.96,.94);const light=new pc.Entity();light.addComponent('light',{type:'directional',color:new pc.Color(1,.99,.97),intensity:.65,shadowIntensity:.4,castShadows:true,shadowType:pc.SHADOW_VSM16,vsmBlurSize:11,shadowDistance:30,shadowResolution:2048,shadowBias:.03,normalOffsetBias:.04});light.setEulerAngles(65,-30,0);app.root.addChild(light);
- loadStage='material';await loadClay(pc,app);
+ loadStage='material';await loadClay(pc,app,{onFallback:()=>track('client_error')});
  loadStage='meta';const response=await fetch(config.assetBase+'.json');if(!response.ok)throw Error(t('loadError'));meta=await response.json();
  loadStage='model';const asset=await new Promise((resolve,reject)=>app.assets.loadFromUrl(config.assetBase+'.glb','container',(err,a)=>err?reject(err):resolve(a)));room=asset.resource.instantiateRenderEntity();app.root.addChild(room);
  loadStage='scene';
