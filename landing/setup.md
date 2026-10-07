@@ -6,7 +6,7 @@ Status: published. Use the official `jt-wang/move-room-playground` repository an
 
 ## 1. Confirm the scope
 
-Setup means one ZIP download, one skill folder inside this project, and a read-only requirements check. If the person asked you to set it up, proceed within that scope. If they only asked to read this guide, explain those steps and ask before installing. Change nothing outside the project.
+Setup means one ZIP download, one skill folder inside this project, a requirements check, and installing any missing tools once the person agrees. If the person asked you to set it up, proceed within that scope. If they only asked to read this guide, explain those steps and ask before installing. Apart from installing missing tools, change nothing outside the project.
 
 ## 2. Requirements
 
@@ -14,7 +14,7 @@ Setup means one ZIP download, one skill folder inside this project, and a read-o
 - Blender (a standard install; its bundled glTF exporter is used)
 - FFmpeg and ffprobe, only for video. Screened still images need only Python and Blender.
 
-If a tool is missing, report it and stop. Don't install or upgrade anything yourself. The person installs missing tools through the official installers.
+`doctor` (step 4) checks these and prints the official install command for anything missing. Install missing tools for the person as the skill's reference.md describes: say what you will run, show a Homebrew `--dry-run` first, run it once they agree, then rerun `doctor`. Don't upgrade tools that are already installed.
 
 ## 3. Get the whole skill folder
 
@@ -44,7 +44,7 @@ python3 scripts/blender-tour doctor            # walkthrough video
 python3 scripts/blender-tour doctor --stills   # already screened still images only
 ```
 
-Report any blocker and stop. Setup ends here. Don't build anything until the person provides a source and asks for a room.
+Install anything it reports missing (section 2) and run it again. Report anything you couldn't fix. Setup ends here. Don't build anything until the person provides a source and asks for a room.
 
 ## 5. When the person asks for a room
 

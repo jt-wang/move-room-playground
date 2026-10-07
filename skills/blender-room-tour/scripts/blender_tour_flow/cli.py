@@ -199,8 +199,31 @@ def serve(job):
     finally: server.server_close()
 
 
+# Official install commands, printed next to a missing tool so the agent can offer them to the person.
+# Checked 2026-10-07: Homebrew cask blender and formulae ffmpeg, python@3.12; the Blender Foundation's verified
+# classic snap; Ubuntu's ffmpeg package; winget manifests BlenderFoundation.Blender, Gyan.FFmpeg, Python.Python.3.12.
+INSTALL = {
+    'darwin': {'blender': 'brew install --cask blender', 'ffmpeg': 'brew install ffmpeg', 'python': 'brew install python@3.12'},
+    'linux': {'blender': 'sudo snap install blender --classic', 'ffmpeg': 'sudo apt install ffmpeg', 'python': 'sudo apt install python3'},
+    'win32': {'blender': 'winget install -e --id BlenderFoundation.Blender', 'ffmpeg': 'winget install -e --id Gyan.FFmpeg',
+              'python': 'winget install -e --id Python.Python.3.12'},
+}
+DOWNLOADS = {'blender': 'https://www.blender.org/download/', 'ffmpeg': 'https://ffmpeg.org/download.html',
+             'python': 'https://www.python.org/downloads/'}
+
+
+def install_hint(name):
+    if name == 'ffprobe': return 'comes with ffmpeg'
+    platform = 'linux' if sys.platform.startswith('linux') else sys.platform
+    command = INSTALL.get(platform, {}).get(name)
+    return f'{command} (or {DOWNLOADS[name]})' if command else DOWNLOADS[name]
+
+
 def doctor(stills=False):
     ok = True
+    v = sys.version_info; version = f'{v[0]}.{v[1]}.{v[2]}'
+    if tuple(v[:2]) >= (3, 11): print(f'python: OK {version}')
+    else: ok = False; print(f'python: MISSING {version} is older than 3.11'); print(f'install python: {install_hint("python")}')
     if stills: print('Still-image jobs: FFmpeg/ffprobe are not required and are not checked.')
     for name in (('blender',) if stills else ('ffmpeg', 'ffprobe', 'blender')):
         try:
@@ -209,7 +232,7 @@ def doctor(stills=False):
             first = subprocess.run([str(path), flag], capture_output=True, text=True, timeout=120).stdout.splitlines()[:1]
             print(f'{name}: OK {path} {first[0] if first else ""}')
         except (ValueError, OSError, subprocess.SubprocessError) as e:
-            ok = False; print(f'{name}: MISSING {e}')
+            ok = False; print(f'{name}: MISSING {e}'); print(f'install {name}: {install_hint(name)}')
     try:
         if not stills:
             filters = subprocess.run([str(find_tool('ffmpeg')), '-hide_banner', '-filters'], capture_output=True, text=True, timeout=60).stdout

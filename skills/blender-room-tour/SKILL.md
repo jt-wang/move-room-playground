@@ -9,7 +9,7 @@ You (the agent) inspect the source images and write a Blender Python recipe. The
 
 **Output boundary:** one job gives an editable `room.blend`, review PNGs, a review manifest/sheet, and a localhost preview (`room.glb` + viewer). When this skill sits inside its parent app checkout (`app/scripts/import-skill.py` exists), that optional importer can turn a build plus `interaction.json` into a local furniture-app folder with working doors. Without the app, nothing is imported. Neither path promises that an arbitrary video or image set will reconstruct well, and neither produces a multi-home site.
 
-Setup, commands, job layout, the recipe, interaction and review contracts are in [reference.md](reference.md). Run `python3 scripts/blender-tour doctor` first (`doctor --stills` if you only have images). To smoke-test without sources, use `example JOB` (or `example JOB --variant articulated` for doors and fixtures), then `build JOB`. If a tool is missing, report it as a blocker. Do not install or upgrade tools.
+Setup, commands, job layout, the recipe, interaction and review contracts are in [reference.md](reference.md). Run `python3 scripts/blender-tour doctor` first (`doctor --stills` if you only have images). To smoke-test without sources, use `example JOB` (or `example JOB --variant articulated` for doors and fixtures), then `build JOB`. If a tool is missing, set it up for the person: see [Installing missing tools](reference.md#installing-missing-tools).
 
 ## Workflow
 

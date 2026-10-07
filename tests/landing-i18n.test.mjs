@@ -141,3 +141,13 @@ test('each language page shares its own 1200×630 card',async()=>{
  }
  assert.deepEqual(forwarded,[]);
 });
+
+test('visitors are never told to install tools; the agent sets them up',()=>{
+ for(const [code,html] of Object.entries(pages)){
+  const today=html.match(/<ul class="today">[\s\S]*?<\/ul>/)[0];
+  assert.doesNotMatch(today,/Blender|FFmpeg|Python/,code);
+  const manual=html.match(/<ol class="paths">[\s\S]*?<\/ol>/)[0];
+  assert.doesNotMatch(manual,/doesn’t install|不会替你安装|不會替你安裝|インストールはしません|설치하지는 않습니다|no las instala/,code);
+ }
+ for(const strings of Object.values(dict))assert.equal(strings.today2,undefined);
+});

@@ -8,13 +8,23 @@
 - Optional import into the parent app: Node.js 20.11+ to run `serve.mjs`. No npm install is needed to serve an imported folder.
 - FFmpeg and ffprobe (only for `prepare`). Optional: an FFmpeg build with the `zscale` filter (zimg) is needed only for HDR or Dolby Vision sources, such as many phone videos. Without it, SDR videos still prepare normally and HDR videos fail with a clear error. `doctor` reports `zscale` as a warning and does not change its exit code because of it. As a workaround, export an SDR copy of the video with another tool you already have, and prepare from that.
 
-Tools are looked up in this order: an explicit env var (`BLENDER_BIN`, `FFMPEG_BIN`, `FFPROBE_BIN`), then `PATH`, then (Blender on macOS only) `/Applications/Blender.app/Contents/MacOS/Blender`. An env var that points at a missing file is an error, not a fallthrough. Nothing is downloaded or installed.
+Tools are looked up in this order: an explicit env var (`BLENDER_BIN`, `FFMPEG_BIN`, `FFPROBE_BIN`), then `PATH`, then (Blender on macOS only) `/Applications/Blender.app/Contents/MacOS/Blender`. An env var that points at a missing file is an error, not a fallthrough. The helper itself never downloads or installs anything.
+
+### Installing missing tools
+
+`doctor` prints an `install <tool>:` line under each missing tool, with the official command for this platform (Homebrew on macOS, the Blender Foundation snap and apt on Linux, winget on Windows) and the download page. Install missing tools for the person; don't ask them to do it by hand:
+
+1. Tell them which tools are missing and the command you will run. With Homebrew, run the command with `--dry-run` first and show what else it would install or upgrade.
+2. Run it once they agree. If it needs a password you can't enter, or it fails, give them the command or the download page to run themselves.
+3. Rerun `doctor` until it passes.
+
+Install only what `doctor` reports missing. Don't upgrade tools that are already installed; upgrading FFmpeg through Homebrew can upgrade unrelated packages too.
 
 ## Setup
 
 Install with `npx skills add jt-wang/move-room-playground --skill blender-room-tour`, then ask your agent to use `blender-room-tour` with your video. The installer includes the helper scripts, viewer assets and license.
 
-Copy the entire `blender-room-tour` folder to any directory, keeping its scripts and assets together. Ask your coding agent to read `SKILL.md` there; no global skill installation or separate project checkout is required. Install the requirements through their official installers if they are not already available, then run `doctor`. Keep video jobs outside the skill folder.
+Copy the entire `blender-room-tour` folder to any directory, keeping its scripts and assets together. Ask your coding agent to read `SKILL.md` there; no global skill installation or separate project checkout is required. Then run `doctor`; it lists anything missing with the command to install it. Keep video jobs outside the skill folder.
 
 Tested here with Python 3.14.5, Blender 5.2.1 LTS, and FFmpeg 8.0.1 on macOS. Other operating systems and Blender versions have not been tested.
 
