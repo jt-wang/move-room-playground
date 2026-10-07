@@ -33,14 +33,20 @@ test('follow links appear in the header, the hero, after the lessons and in the 
  for(const m of links)assert.equal(m[1],m[2],'each button reports where it sits');
 });
 
-test('the page leads with the AI-agent lesson and backs it with the recorded build',()=>{
+test('one sentence up top, then the film, three lessons and three steps; nothing else',()=>{
  const h1=/<h1[^>]*>([\s\S]*?)<\/h1>/.exec(html)[1];
- assert.match(h1,/AI agent/);
- const lessons=/<section[^>]*id="lessons"[\s\S]*?<\/section>/.exec(html)?.[0]||'';
- assert.equal((lessons.match(/<li class="lesson">/g)||[]).length,4);
- assert.match(lessons,/\$17\.51/);
+ assert.ok(h1.length<=60&&/3D/.test(h1),h1);
  const order=['id="story"','id="lessons"','id="skill"'].map(s=>html.indexOf(s));
- assert.ok(order.every(i=>i>0)&&order[0]<order[1]&&order[1]<order[2],'story, then lessons, then how to try it');
+ assert.ok(order.every(i=>i>0)&&order[0]<order[1]&&order[1]<order[2],'film, then lessons, then how to use it');
+ const lessons=/<section[^>]*id="lessons"[\s\S]*?<\/section>/.exec(html)[0];
+ assert.equal((lessons.match(/<li class="lesson">/g)||[]).length,3);
+ assert.doesNotMatch(lessons.replace(/<div class="follow-cta">[\s\S]*/,''),/<p[ >]/,'lessons are one line each');
+ const skill=/<section[^>]*id="skill"[\s\S]*?<\/section>/.exec(html)[0];
+ assert.equal((skill.match(/<li class="step">/g)||[]).length,3);
+ assert.match(skill,/data-copy-target="hero-setup"/,'step 1 copies the same setup line');
+ const visible=html.replace(/<head>[\s\S]*?<\/head>|<details[\s\S]*?<\/details>|<script[\s\S]*?<\/script>|<pre[\s\S]*?<\/pre>/g,'').replace(/<[^>]+>/g,' ');
+ const words=visible.split(/\s+/).filter(w=>/\w/.test(w)).length;
+ assert.ok(words<=200,'visible words: '+words);
 });
 
 test('a shared link renders a large card credited to @thejingtao',()=>{

@@ -21,7 +21,7 @@ test('the landing comes in the playground’s six languages, each at its own pat
 
 test('every translatable string has a translation, and no extra keys',()=>{
  const keys=Object.keys(englishStrings(template)).sort();
- assert.ok(keys.length>50,'template keys: '+keys.length);
+ assert.ok(keys.length>40,'template keys: '+keys.length);
  assert.deepEqual(Object.keys(dict).sort(),['es','ja','ko','zh-Hans','zh-Hant']);
  for(const [code,strings] of Object.entries(dict)){
   assert.deepEqual(Object.keys(strings).sort(),keys,code);
@@ -35,7 +35,7 @@ test('translated pages keep links, controls and the follow buttons',()=>{
  assert.deepEqual(en.follow,['header','hero','lessons','footer']);
  for(const code of ['zh-Hans','zh-Hant','ja','ko','es'])assert.deepEqual(shape(pages[code]),en,code);
  assert.match(text(pages.ja),/AI エージェント/);assert.doesNotMatch(text(pages.ja),/Expect the first attempt to fail/);
- assert.match(text(pages['zh-Hant']),/我學到了什麼/);
+ assert.match(text(pages['zh-Hant']),/我學到的/);
 });
 
 test('the share button and card speak the page’s language',()=>{
@@ -144,8 +144,8 @@ test('each language page shares its own 1200×630 card',async()=>{
 
 test('visitors are never told to install tools; the agent sets them up',()=>{
  for(const [code,html] of Object.entries(pages)){
-  const today=html.match(/<ul class="today">[\s\S]*?<\/ul>/)[0];
-  assert.doesNotMatch(today,/Blender|FFmpeg|Python/,code);
+  const outside=html.replace(/<details[\s\S]*?<\/details>/,'');
+  assert.doesNotMatch(outside.replace(/<head>[\s\S]*?<\/head>/,''),/Install Blender|安装 Blender|安裝 Blender|インストールする|설치하세요|Instala Blender/,code);
   const manual=html.match(/<ol class="paths">[\s\S]*?<\/ol>/)[0];
   assert.doesNotMatch(manual,/doesn’t install|不会替你安装|不會替你安裝|インストールはしません|설치하지는 않습니다|no las instala/,code);
  }
@@ -163,15 +163,13 @@ test('the first screen pairs the one-line setup with the follow button',()=>{
  }
 });
 
-test('Get started offers one path: paste a line into your agent',()=>{
+test('one setup line on the page; the npx command only under Technical details',()=>{
  for(const [code,html] of Object.entries(pages)){
-  const panel=html.match(/<div class="panel" id="get-started"[\s\S]*?<details class="manual">/)[0];
-  assert.equal((panel.match(/<pre class="command-box">/g)||[]).length,1,code+': one command outside Technical details');
-  assert.match(panel,/data-setup-url/,code);assert.doesNotMatch(panel,/npx skills add/,code);
-  const details=html.match(/<details class="manual">[\s\S]*?<\/details>/)[0];
-  assert.match(details,/npx skills add/,code+': the npx command stays available in Technical details');
+  const outside=html.replace(/<details[\s\S]*?<\/details>/,'');
+  assert.equal((outside.match(/<pre class="command-box">/g)||[]).length,1,code);
+  assert.doesNotMatch(outside,/npx skills add/,code);
+  assert.match(html.match(/<details class="manual">[\s\S]*?<\/details>/)[0],/npx skills add/,code);
  }
- for(const [code,s] of Object.entries(dict))assert.doesNotMatch(s.agentLabel,/^(Or|O)\b|或者|或是|または|또는/,code);
 });
 
 test('the opening line is short and never claims every first attempt failed',()=>{
@@ -179,6 +177,6 @@ test('the opening line is short and never claims every first attempt failed',()=
  const failed=/fail|失败|失敗|실패|fallaron/i;
  for(const [code,s] of Object.entries(all)){
   assert.doesNotMatch(s.lede,failed,code+' lede');assert.doesNotMatch(s.ogDescription,failed,code+' og');
-  assert.ok(s.lede.length<=(code==='en'||code==='es'?170:80),`${code} lede is ${s.lede.length} chars`);
+  const lede=s.lede.replace(/<[^>]+>/g,'');assert.ok(lede.length<=(code==='en'||code==='es'?90:45),`${code} lede is ${lede.length} chars`);
  }
 });

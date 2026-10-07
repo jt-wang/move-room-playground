@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <title data-i18n="title">Move — AI agents built these rooms in Blender</title>
-  <meta name="description" content="I had no 3D background. AI coding agents built 18 rooms in Blender from my videos and floor plans. The review loop that made it work is a free skill for Claude Code and Codex." data-i18n-attr="content:metaDescription">
+  <title data-i18n="title">Move — film a room, your AI agent builds it in 3D</title>
+  <meta name="description" content="I’d never done 3D. AI built 18 rooms from my videos and floor plans. Paste one line into Claude Code or Codex to do it with your room." data-i18n-attr="content:metaDescription">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://move.jingtao.io/">
-  <meta property="og:title" content="No 3D background. AI agents built 18 rooms in Blender." data-i18n-attr="content:ogTitle">
+  <meta property="og:title" content="Film a room. Your AI agent builds it in 3D." data-i18n-attr="content:ogTitle">
   <meta property="og:description" content="Paste one line into Claude Code or Codex and build your own room. The skill is free." data-i18n-attr="content:ogDescription">
   <meta property="og:image" content="https://move.jingtao.io/assets/share-card.png">
   <meta property="og:image:width" content="1200">
@@ -35,8 +35,6 @@
     </a>
     <nav class="site-nav" aria-label="Primary" data-i18n-attr="aria-label:navLabel">
       <ul>
-        <li class="nav-section"><a href="#lessons" data-i18n="navLessons">What I learned</a></li>
-        <li class="nav-section"><a href="#skill" data-i18n="navTry">Try it</a></li>
         <li class="js-only"><select class="lang-select" data-lang-select aria-label="Language" data-i18n-attr="aria-label:languageLabel"></select></li>
         <li><a class="btn btn-primary nav-follow" href="/x?from=header" data-follow="header" target="_blank" rel="noopener" data-i18n="navFollow">Follow on X</a></li>
       </ul>
@@ -46,11 +44,11 @@
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <h1 id="hero-title" data-i18n="heroTitle">Get an AI agent to do expert work you’ve never done.</h1>
-        <p class="lede" data-i18n="lede">I’ve never done 3D. AI built these 18 rooms in Blender from my apartment-viewing videos and floor plans. You can do the same with your room.</p>
+        <h1 id="hero-title" data-i18n="heroTitle">Film a room. Your AI agent builds it in 3D.</h1>
+        <p class="lede" data-i18n="lede">I’d never done 3D. AI built all 18 of these rooms.</p>
         <div class="actions">
           <div class="hero-try">
-            <p class="hero-try-label" data-i18n="heroTryLabel">Make your own: paste this into Claude Code or Codex.</p>
+            <p class="hero-try-label" data-i18n="heroTryLabel">Try it on your room: paste this into Claude Code or Codex.</p>
             <div class="command-row">
               <pre class="command-box"><code id="hero-setup" class="command" data-i18n="agentCommand">Read <span data-setup-url>/setup.md</span> and set up blender-room-tour for this project.</code></pre>
               <button type="button" class="btn btn-secondary js-only" data-copy-target="hero-setup" data-copy-status="hero-copy-status" data-copied="Copied" data-copy-fallback="Select and copy the command" data-i18n="copy" data-i18n-attr="data-copied:copied data-copy-fallback:copyFallback">Copy</button>
@@ -58,7 +56,6 @@
             <p id="hero-copy-status" class="copy-status" role="status"></p>
           </div>
           <a class="btn btn-primary btn-main" href="/x?from=hero" data-follow="hero" target="_blank" rel="noopener" data-i18n="followHandle">Follow @thejingtao</a>
-          <a class="play-link" href="#story" data-i18n="watchStory">Watch the 70-second story <span aria-hidden="true">→</span></a>
         </div>
       </div>
 
@@ -75,8 +72,7 @@
 
     <section class="story section" id="story" aria-labelledby="story-title">
       <div class="story-text">
-        <h2 id="story-title" data-i18n="storyTitle">How this started</h2>
-        <p data-i18n="storyText">I filmed the apartments I viewed and still couldn’t remember the layouts well enough to compare them. I had never modeled in 3D. I gave the videos to an AI coding agent, had it build each room in Blender, checked the renders against the footage and asked for fixes, round after round. The film shows it in 70 seconds.</p>
+        <h2 id="story-title" data-i18n="filmTitle">How it went, in 70 seconds</h2>
       </div>
       <figure class="film">
         <video controls playsinline preload="metadata" poster="/assets/story-poster.jpg" aria-label="Move story film" data-i18n-attr="aria-label:filmLabel" data-film-landscape="/assets/story.mp4" data-film-portrait="/assets/story-portrait.mp4#t=0.001" data-poster-landscape="/assets/story-poster.jpg" data-poster-portrait="/assets/story-poster-portrait.jpg">
@@ -88,110 +84,42 @@
     </section>
 
     <section class="lessons section" id="lessons" aria-labelledby="lessons-title">
-      <h2 id="lessons-title" data-i18n="lessonsTitle">What it taught me about working with AI agents</h2>
-      <p class="intro" data-i18n="lessonsIntro">Each of these carries over to any field you don’t know yet.</p>
+      <h2 id="lessons-title" data-i18n="lessonsTitle">What I learned</h2>
       <ol class="lesson-list">
-        <li class="lesson">
-          <h3 data-i18n="lesson1Title">Expect the first attempt to fail.</h3>
-          <p data-i18n="lesson1Text">I recorded six fully automatic first attempts. They cost $17.51 in model calls, and none produced a usable room. Every room in the playground came out of review rounds after that. Plan your time and budget for the loop.</p>
-        </li>
-        <li class="lesson">
-          <h3 data-i18n="lesson2Title">Have it write down what it sees before it builds.</h3>
-          <p data-i18n="lesson2Text">The agent first lists the layout, doors, windows, light and materials it sees in reference frames, then turns those notes into a build recipe. When a room comes out wrong, you can tell whether it misread the video or built the notes wrong.</p>
-        </li>
-        <li class="lesson">
-          <h3 data-i18n="lesson3Title">Check against the source.</h3>
-          <p data-i18n="lesson3Text">An overview render looked right. Laying the wall lines over the floor plan showed a missing toilet wall and a sink and stove in the wrong order. Catching that took no Blender knowledge, only the source and a side-by-side comparison.</p>
-        </li>
-        <li class="lesson">
-          <h3 data-i18n="lesson4Title">Turn what worked into a skill.</h3>
-          <p data-i18n="lesson4Text">Once the loop worked, I packaged it as blender-room-tour for Claude Code and Codex. My next room starts from the method, and yours can too.</p>
-        </li>
+        <li class="lesson"><h3 data-i18n="lesson2Title">Have it write down what it sees before it builds.</h3></li>
+        <li class="lesson"><h3 data-i18n="lesson3Title">Check against the source.</h3></li>
+        <li class="lesson"><h3 data-i18n="lesson4Title">Turn what worked into a skill.</h3></li>
       </ol>
       <div class="follow-cta">
         <p class="follow-line" data-i18n="followLine">I’m building more things this way. Follow along on X.</p>
         <div class="follow-actions">
           <a class="btn btn-primary" href="/x?from=lessons" data-follow="lessons" target="_blank" rel="noopener" data-i18n="followHandle2">Follow @thejingtao</a>
-          <a class="btn btn-secondary" data-share-x data-share-text="No 3D background, and AI agents built 18 rooms in Blender. The review loop that made it work is a free skill:" href="https://x.com/intent/post?text=No%203D%20background%2C%20and%20AI%20agents%20built%2018%20rooms%20in%20Blender.%20The%20review%20loop%20that%20made%20it%20work%20is%20a%20free%20skill%3A&amp;url=https%3A%2F%2Fmove.jingtao.io%2F&amp;via=thejingtao" target="_blank" rel="noopener" data-i18n="shareX" data-i18n-attr="data-share-text:shareText">Share on X</a>
+          <a class="btn btn-secondary" data-share-x data-share-text="Film a room and an AI agent builds it in 3D. 18 rooms so far, and the skill is free:" href="https://x.com/intent/post?text=No%203D%20background%2C%20and%20AI%20agents%20built%2018%20rooms%20in%20Blender.%20The%20review%20loop%20that%20made%20it%20work%20is%20a%20free%20skill%3A&amp;url=https%3A%2F%2Fmove.jingtao.io%2F&amp;via=thejingtao" target="_blank" rel="noopener" data-i18n="shareX" data-i18n-attr="data-share-text:shareText">Share on X</a>
         </div>
       </div>
     </section>
 
     <section class="skill section" id="skill" aria-labelledby="skill-title">
-      <div class="skill-intro">
-        <h2 id="skill-title" data-i18n="skillTitle">Try it on a room you’re in</h2>
-        <p class="intro" data-i18n="skillIntro">blender-room-tour is the workflow I used, packaged as a skill for Claude Code and Codex. The agent does the Blender work. You check what it inferred against your video and ask for fixes. Plan on a few rounds. The geometry is estimated from the video, so treat sizes as approximate.</p>
-
-        <h3 class="sub-title" data-i18n="getsTitle">What you end up with</h3>
-        <ul class="gets">
-          <li data-i18n="get1"><strong>The blender-room-tour skill</strong>, ready to reuse on your next room.</li>
-          <li data-i18n="get2"><strong>An editable Blender scene</strong>, a .blend file you can open and change.</li>
-          <li data-i18n="get3"><strong>Review renders</strong> to compare against your video.</li>
-          <li data-i18n="get4"><strong>A local viewer</strong> for exploring the room on your computer.</li>
-        </ul>
-
-        <h3 class="sub-title" data-i18n="stepsTitle">How a build goes</h3>
-        <ol class="steps">
-          <li class="step">
-            <span class="step-num" aria-hidden="true">1</span>
-            <div>
-              <h4 data-i18n="step1Title">Film a room</h4>
-              <p data-i18n="step1Text">Walk slowly through any room with your phone. The agent can only model what the video shows.</p>
-            </div>
-          </li>
-          <li class="step">
-            <span class="step-num" aria-hidden="true">2</span>
-            <div>
-              <h4 data-i18n="step2Title">Your agent studies the video</h4>
-              <p data-i18n="step2Text">It pulls reference frames, writes down the layout, openings, light and materials, and turns those notes into a Blender Python recipe.</p>
-            </div>
-          </li>
-          <li class="step">
-            <span class="step-num" aria-hidden="true">3</span>
-            <div>
-              <h4 data-i18n="step3Title">It builds the room</h4>
-              <p data-i18n="step3Text">From the recipe it makes the editable Blender scene, the review renders and the local viewer.</p>
-            </div>
-          </li>
-          <li class="step">
-            <span class="step-num" aria-hidden="true">4</span>
-            <div>
-              <h4 data-i18n="step4Title">You check, then ask for fixes</h4>
-              <p data-i18n="step4Text">Read what it inferred and compare the renders with your video. Where something drifts, tell it what’s wrong. Some fixes take a few rounds.</p>
-            </div>
-          </li>
-        </ol>
-      </div>
-
-      <div class="panel" id="get-started" aria-labelledby="start-title">
-        <h3 id="start-title" class="panel-title" data-i18n="startTitle">Get started</h3>
-
-        <div class="panel-block">
-          <p class="panel-label" data-i18n="todayLabel">You can do today</p>
-          <ul class="today">
-            <li data-i18n="today1">Film a slow phone video of a room you’re in.</li>
-            <li data-i18n="today3"><a href="/play/">Explore the example rooms</a> to see what you’re building toward.</li>
-          </ul>
-        </div>
-
-
-        <div class="panel-block">
-          <p class="panel-label" data-i18n="agentLabel">Paste this into Claude Code or Codex</p>
-          <p class="install-note" data-i18n="agentNote">It follows <a href="/setup.md">the setup guide</a>: it installs the skill in this project and, after asking you, any of Blender, FFmpeg or Python that are missing.</p>
-          <div class="command-row">
-            <pre class="command-box"><code id="agent-setup" class="command" data-i18n="agentCommand">Read <span data-setup-url>/setup.md</span> and set up blender-room-tour for this project.</code></pre>
-            <button type="button" class="btn btn-primary js-only" data-copy-target="agent-setup" data-copy-status="agent-copy-status" data-copied="Copied" data-copy-fallback="Select and copy the command" data-i18n="copy2" data-i18n-attr="data-copied:copied data-copy-fallback:copyFallback">Copy</button>
+      <h2 id="skill-title" data-i18n="skillTitle">Try it on a room you’re in</h2>
+      <ol class="steps">
+        <li class="step">
+          <span class="step-num" aria-hidden="true">1</span>
+          <div>
+            <p data-i18n="useStep1">Paste the setup line into Claude Code or Codex. It installs the skill and anything missing.</p>
+            <button type="button" class="btn btn-secondary js-only step-copy" data-copy-target="hero-setup" data-copy-status="step-copy-status" data-copied="Copied" data-copy-fallback="Select and copy the command" data-i18n="copySetup" data-i18n-attr="data-copied:copied data-copy-fallback:copyFallback">Copy the line</button>
+            <p id="step-copy-status" class="copy-status" role="status"></p>
           </div>
-          <p id="agent-copy-status" class="copy-status" role="status"></p>
-        </div>
-
-        <div class="panel-block">
-          <p class="panel-label" data-i18n="askLabel">Then ask your agent</p>
-          <blockquote class="prompt"><p data-i18n="askPrompt">Use blender-room-tour to turn this walkthrough video into an editable 3D room I can explore.</p></blockquote>
-          <p class="panel-label" data-i18n="fixLabel">When a render looks off</p>
-          <blockquote class="prompt"><p data-i18n="fixPrompt">The kitchen window is wider in the video. Check the frames and fix it.</p></blockquote>
-        </div>
-
+        </li>
+        <li class="step">
+          <span class="step-num" aria-hidden="true">2</span>
+          <div><p data-i18n="useStep2">Film a room slowly with your phone and give it the video.</p></div>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-hidden="true">3</span>
+          <div><p data-i18n="useStep3">Tell it what looks wrong. It fixes it.</p></div>
+        </li>
+      </ol>
+      <div class="panel" id="get-started">
         <details class="manual">
           <summary data-i18n="techSummary">Technical details</summary>
           <p class="panel-label" data-i18n="reqLabel">Requirements</p>
