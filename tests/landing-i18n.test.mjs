@@ -173,3 +173,12 @@ test('Get started offers one path: paste a line into your agent',()=>{
  }
  for(const [code,s] of Object.entries(dict))assert.doesNotMatch(s.agentLabel,/^(Or|O)\b|或者|或是|または|또는/,code);
 });
+
+test('the opening line is short and never claims every first attempt failed',()=>{
+ const en=englishStrings(template),all={en,...dict};
+ const failed=/fail|失败|失敗|실패|fallaron/i;
+ for(const [code,s] of Object.entries(all)){
+  assert.doesNotMatch(s.lede,failed,code+' lede');assert.doesNotMatch(s.ogDescription,failed,code+' og');
+  assert.ok(s.lede.length<=(code==='en'||code==='es'?170:80),`${code} lede is ${s.lede.length} chars`);
+ }
+});
